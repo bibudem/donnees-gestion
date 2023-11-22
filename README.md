@@ -60,3 +60,15 @@ Le dossier `extraction` contient les différents scripts
 qui permettent d'extraire des données de nos systèmes.
 
 Pour l'instant, seules les réservations dans LibCal sont scriptées.
+
+## Chargement des données
+
+Le dossier `extraction` contient des scripts pour charger les données brutes dans l'entrepôt.
+
+Exemple:
+
+```bash
+python reservations.py --fichier /chemin/vers/fichier/CSV
+```
+
+La configuration de la base de données et de la journalisation sont également nécessaires.
