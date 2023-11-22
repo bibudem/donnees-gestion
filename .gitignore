@@ -3,3 +3,10 @@
 
 # Les scripts qu'on ne veut pas diffuser (clés d'accès, etc.)
 extraction/libcal/*.sh
+
+# Les fichiers de config cachés
+config/_*.ini
+utils/_domaines.ini
+
+# Les logs
+logs/*.log
