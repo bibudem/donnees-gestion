@@ -1,6 +1,10 @@
 # Environnement de virtualisation Python
 .env
 
+# Fichiers compilés Python
+__pycache__/
+*.pyc
+
 # Les scripts qu'on ne veut pas diffuser (clés d'accès, etc.)
 extraction/libcal/*.sh
 
