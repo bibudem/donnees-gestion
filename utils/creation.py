@@ -81,6 +81,39 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les inscriptions
+    if (domaines.getboolean('domaines', 'inscriptions')):
+
+        nom_table = "inscriptions"
+
+        # La table temporaire pour le chargement
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                event_id VARCHAR(50),
+                booking_id VARCHAR(50),
+                registration_type VARCHAR (255),
+                email VARCHAR(255)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table qui sera visible dans PowerBI
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                id VARCHAR(50),
+                usager VARCHAR(255),
+                courriel VARCHAR(255),
+                discipline VARCHAR(255),
+                evenement_id VARCHAR(50)
+            );
+        """
+        executer_requete(connexion, requete, logger)
 
 finally:
     # Fermeture de la connexion
