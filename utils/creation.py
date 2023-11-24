@@ -124,7 +124,6 @@ try:
         executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
 
         # Création de la table
-        #         Duree
 
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
@@ -206,6 +205,89 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les fichiers Synchro (étudiants et personnel)
+    if (domaines.getboolean('domaines', 'synchro')):
+
+
+        # La table temporaire pour le chargement des étudiants
+        nom_table = "etudiants"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                codebarres VARCHAR(50),
+                codeCycle VARCHAR(10),
+                codeProgramme VARCHAR(10),
+                programme VARCHAR(255),
+                courriel VARCHAR(100),
+                login VARCHAR(100)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table temporaire pour le chargement du personnel
+        nom_table = "personnel"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                CodeUnite VARCHAR(10),
+                DescUnite VARCHAR(255),
+                Statut VARCHAR(5),
+                Courriel VARCHAR(255),
+                CodeBarres VARCHAR(50),
+                Fonction VARCHAR(255),
+                Login VARCHAR(100)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table de clientèle cumulative, non visible dans PowerBI
+        nom_table = "_clientele_cumul"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                usager VARCHAR(255),
+                courriel VARCHAR(255),
+                codebarres VARCHAR(50),
+                fonction VARCHAR(50),
+                niveau VARCHAR(50),
+                code_programme VARCHAR(10),
+                programme VARCHAR(255),
+                code_unite VARCHAR(10),
+                unite VARCHAR(255),
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(100)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table de clientèle visible dans PowerBI
+        nom_table = "clientele"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                session VARCHAR(50),
+                usager VARCHAR(255),
+                courriel VARCHAR(255),
+                codebarres VARCHAR(50),
+                fonction VARCHAR(50),
+                niveau VARCHAR(50),
+                code_programme VARCHAR(10),
+                programme VARCHAR(255),
+                code_unite VARCHAR(10),
+                unite VARCHAR(255),
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(100)
+            );
+        """
+        executer_requete(connexion, requete, logger)
 
 finally:
     # Fermeture de la connexion
