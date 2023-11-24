@@ -115,6 +115,48 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les ordinateurs publics
+    if (domaines.getboolean('domaines', 'ordinateurs')):
+
+        nom_table = "sessions_ordinateurs"
+
+        # La table temporaire pour le chargement
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        #         Duree
+
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                ID INTEGER,
+                Secteur VARCHAR(100),
+                Station VARCHAR(100),
+                Utlisateur_Login VARCHAR(50),
+                Ouverture_session TIMESTAMP,
+                Fermeture_session TIMESTAMP,
+                Duree INTEGER
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table qui sera visible dans PowerBI
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                usager VARCHAR(255),
+                courriel VARCHAR(255),
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(100),
+                ordinateur VARCHAR(100),
+                debut TIMESTAMP,
+                fin TIMESTAMP,
+                duree INTEGER
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
 finally:
     # Fermeture de la connexion
     fermer_connexion(connexion, logger)
