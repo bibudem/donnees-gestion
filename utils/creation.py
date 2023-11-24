@@ -37,7 +37,8 @@ try:
                 code VARCHAR(50),
                 nom VARCHAR(255),
                 departement VARCHAR(255),
-                discipline VARCHAR(255)
+                discipline VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (code)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -53,13 +54,14 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
-                bookId VARCHAR(50),
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
                 fromDate TIMESTAMP,
                 email VARCHAR(255),
                 status VARCHAR (255),
                 location_name VARCHAR(255),
                 category_name VARCHAR(255),
-                item_name VARCHAR(255)
+                item_name VARCHAR(255),
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -70,13 +72,15 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 discipline VARCHAR(255),
                 dateheure TIMESTAMP,
                 bibliotheque VARCHAR(255),
                 categorie VARCHAR(255),
-                salle VARCHAR(255)
+                salle VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -95,7 +99,8 @@ try:
                 event_id VARCHAR(50),
                 booking_id VARCHAR(50),
                 registration_type VARCHAR (255),
-                email VARCHAR(255)
+                email VARCHAR(255),
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (event_id, booking_id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -110,7 +115,8 @@ try:
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 discipline VARCHAR(255),
-                evenement_id VARCHAR(50)
+                evenement_id VARCHAR(50),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id, evenement_id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -133,7 +139,8 @@ try:
                 Utlisateur_Login VARCHAR(50),
                 Ouverture_session TIMESTAMP,
                 Fermeture_session TIMESTAMP,
-                Duree INTEGER
+                Duree INTEGER,
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -151,7 +158,8 @@ try:
                 ordinateur VARCHAR(100),
                 debut TIMESTAMP,
                 fin TIMESTAMP,
-                duree INTEGER
+                duree INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager, ordinateur, debut)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -171,7 +179,8 @@ try:
                 Enregistrement INTEGER,
                 Secteur VARCHAR(100),
                 Date TIMESTAMP,
-                Entrees INTEGER
+                Entrees INTEGER,
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (enregistrement)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -185,7 +194,8 @@ try:
                 journee date,
                 bibliotheque VARCHAR(100),
                 frequentation INTEGER,
-                occupation INTEGER
+                occupation INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (journee, bibliotheque)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -200,7 +210,8 @@ try:
                 Enregistrement INTEGER,
                 Secteur VARCHAR(100),
                 Date TIMESTAMP,
-                Occupation INTEGER
+                Occupation INTEGER,
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (enregistrement)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -221,7 +232,8 @@ try:
                 codeProgramme VARCHAR(10),
                 programme VARCHAR(255),
                 courriel VARCHAR(100),
-                login VARCHAR(100)
+                login VARCHAR(100),
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (login)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -233,13 +245,15 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
                 CodeUnite VARCHAR(10),
                 DescUnite VARCHAR(255),
                 Statut VARCHAR(5),
                 Courriel VARCHAR(255),
                 CodeBarres VARCHAR(50),
                 Fonction VARCHAR(255),
-                Login VARCHAR(100)
+                Login VARCHAR(100),
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -261,7 +275,8 @@ try:
                 code_unite VARCHAR(10),
                 unite VARCHAR(255),
                 discipline VARCHAR(255),
-                bibliotheque VARCHAR(100)
+                bibliotheque VARCHAR(100),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -284,7 +299,8 @@ try:
                 code_unite VARCHAR(10),
                 unite VARCHAR(255),
                 discipline VARCHAR(255),
-                bibliotheque VARCHAR(100)
+                bibliotheque VARCHAR(100),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (session, usager)
             );
         """
         executer_requete(connexion, requete, logger)

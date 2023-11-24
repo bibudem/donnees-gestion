@@ -73,7 +73,7 @@ def parse_arguments():
 
 def convertir_json_en_csv(data, fichier_csv):
     # Liste des propriétés que vous souhaitez extraire
-    champs = ["bookId", "fromDate", "email", "status", "location_name", "category_name", "item_name"]
+    champs = ["fromDate", "email", "status", "location_name", "category_name", "item_name"]
 
     with open(fichier_csv, 'w', newline='', encoding='utf-8') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=champs)
