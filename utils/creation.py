@@ -157,6 +157,56 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # La fréquentation
+    if (domaines.getboolean('domaines', 'frequentation')):
+
+        nom_table = "frequentation"
+
+        # La table temporaire pour le chargement
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                Enregistrement INTEGER,
+                Secteur VARCHAR(100),
+                Date TIMESTAMP,
+                Entrees INTEGER
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table qui sera visible dans PowerBI
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                journee date,
+                bibliotheque VARCHAR(100),
+                frequentation INTEGER,
+                occupation INTEGER
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table temporaire pour le chargement de l'occupation
+        nom_table = "occupation"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                Enregistrement INTEGER,
+                Secteur VARCHAR(100),
+                Date TIMESTAMP,
+                Occupation INTEGER
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+
 finally:
     # Fermeture de la connexion
     fermer_connexion(connexion, logger)
