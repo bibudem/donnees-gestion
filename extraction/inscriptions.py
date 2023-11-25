@@ -2,6 +2,12 @@ import argparse
 import requests
 import csv
 from datetime import datetime
+import logging
+import configparser
+import sys
+import os
+sys.path.append(os.path.abspath("../commun"))
+from logs import initialisation_logs
 
 def obtenir_token(url_token, client_id, client_secret):
     data = {
@@ -65,12 +71,8 @@ def paginer_api(url, token, params=None, taille_page=100):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour obtenir une liste de réservations en format CSV')
-    parser.add_argument('--url_api', required=True, help='URL de base de l\'API LibCal')
-    parser.add_argument('--client_id', required=True, help='ID du client pour l\'authentification')
-    parser.add_argument('--client_secret', required=True, help='Secret du client pour l\'authentification')
     parser.add_argument('--date_debut', required=True, help='Date de début (aaaa-mm-dd)')
     parser.add_argument('--date_fin', required=True, help='Date de fin (aaaa-mm-dd)')
-    parser.add_argument('--taille_page', type=int, default=100, help='Taille de la page de résultats (par défaut: 100)')
     parser.add_argument('--fichier_sortie', required=True, help='Fichier de sortie')
 
     return parser.parse_args()
@@ -99,48 +101,54 @@ def convertir_json_en_csv(data, fichier_csv):
                 ligne[champ] = valeur
             writer.writerow(ligne)
 
-if __name__ == "__main__":
+# Configuration du journal
+initialisation_logs()
+logger = logging.getLogger("extraction/inscriptions.py")
 
-    # Les arguments en ligne de commande
-    args = parse_arguments()
+# Accès LibCal
+config = configparser.ConfigParser()
+config.read('../config/_libcal.ini')
 
-    # L'URL de base de l'API
-    url_api = args.url_api
+# Les arguments en ligne de commande
+args = parse_arguments()
 
-    # On va obtenir le jeton d'accès
-    url_token = url_api + "/oauth/token"
-    client_id = args.client_id
-    client_secret = args.client_secret
-    access_token = obtenir_token(url_token, client_id, client_secret)
+# L'URL de base de l'API
+url_api = config['evenements']['url']
 
-    # On va calculer le nombre de jours
-    date_debut = datetime.strptime(args.date_debut, "%Y-%m-%d")
-    date_fin = datetime.strptime(args.date_fin, "%Y-%m-%d")
-    difference = date_fin - date_debut
-    nb_jours = difference.days
+# On va obtenir le jeton d'accès
+url_token = url_api + "/oauth/token"
+client_id = config['evenements']['client']
+client_secret = config['evenements']['secret']
+access_token = obtenir_token(url_token, client_id, client_secret)
 
-    if access_token:
+# On va calculer le nombre de jours
+date_debut = datetime.strptime(args.date_debut, "%Y-%m-%d")
+date_fin = datetime.strptime(args.date_fin, "%Y-%m-%d")
+difference = date_fin - date_debut
+nb_jours = difference.days
 
-        # On doit d'abord aller chercher la liste des événements pour la période données
+if access_token:
 
-        # Les paramètres à passer
-        params_page = {'date': date_debut.strftime("%Y-%m-%d"), 'days': nb_jours, 'limit': args.taille_page, 'cal_id': 7690}
+    # On doit d'abord aller chercher la liste des événements pour la période données
 
-        # On appelle l'API paginée avec le jeton d'accès obtenu
-        evenements = paginer_api(url_api + "/events", access_token, params_page, args.taille_page)
+    # Les paramètres à passer
+    params_page = {'date': date_debut.strftime("%Y-%m-%d"), 'days': nb_jours, 'limit': config.getint('evenements', 'page'), 'cal_id': 7690}
 
-        # Maintenant on boucle sur les événements pour aller chercher les inscriptions
-        inscriptions = []
-        for evenement in evenements:
-            ev_id = str(evenement.get("id"))
-            inscriptions_tmp = paginer_api(url_api + "/events/" + ev_id + "/registrations", access_token, [], args.taille_page)
-            registrants = inscriptions_tmp[0].get("registrants")
-            for registrant in registrants:
-                registrant['event_id'] = ev_id
-            inscriptions.extend(registrants)
+    # On appelle l'API paginée avec le jeton d'accès obtenu
+    evenements = paginer_api(url_api + "/events", access_token, params_page, config.getint('evenements', 'page'))
 
-        # On écrit le fichier CSV
-        convertir_json_en_csv(inscriptions, args.fichier_sortie)
+    # Maintenant on boucle sur les événements pour aller chercher les inscriptions
+    inscriptions = []
+    for evenement in evenements:
+        ev_id = str(evenement.get("id"))
+        inscriptions_tmp = paginer_api(url_api + "/events/" + ev_id + "/registrations", access_token, [], config.getint('evenements', 'page'))
+        registrants = inscriptions_tmp[0].get("registrants")
+        for registrant in registrants:
+            registrant['event_id'] = ev_id
+        inscriptions.extend(registrants)
 
-    else:
-        print("Impossible d'obtenir le jeton d'accès.")
+    # On écrit le fichier CSV
+    convertir_json_en_csv(inscriptions, args.fichier_sortie)
+
+else:
+    logger.error("Impossible d'obtenir le jeton d'accès")

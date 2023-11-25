@@ -41,6 +41,7 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
+        (event_id, booking_id, registration_type, email)
         FROM '{chemin_fichier_csv}'
         DELIMITER ','
         CSV HEADER;
