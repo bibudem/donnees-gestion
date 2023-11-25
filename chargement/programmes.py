@@ -42,6 +42,7 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
+        (code, nom, departement, discipline)
         FROM '{chemin_fichier_csv}'
         DELIMITER ';'
         CSV HEADER;

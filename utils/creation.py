@@ -13,7 +13,7 @@ logger = logging.getLogger("creation.py")
 
 # Domaines à créer/supprimer
 domaines = configparser.ConfigParser()
-domaines.read('_domaines.ini')
+domaines.read('../config/_creation.ini')
 
 # Requêtes de création de tables
 try:
@@ -233,6 +233,10 @@ try:
                 programme VARCHAR(255),
                 courriel VARCHAR(100),
                 login VARCHAR(100),
+                niveau VARCHAR(50),
+                jour DATE,
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(100),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (login)
             );
         """
@@ -253,6 +257,9 @@ try:
                 CodeBarres VARCHAR(50),
                 Fonction VARCHAR(255),
                 Login VARCHAR(100),
+                jour DATE,
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(100),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
@@ -265,6 +272,7 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
+                jour date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 codebarres VARCHAR(50),
@@ -288,7 +296,7 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
-                session VARCHAR(50),
+                jour date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 codebarres VARCHAR(50),
@@ -300,7 +308,7 @@ try:
                 unite VARCHAR(255),
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
-                CONSTRAINT pkey_{nom_table} PRIMARY KEY (session, usager)
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (jour, usager)
             );
         """
         executer_requete(connexion, requete, logger)

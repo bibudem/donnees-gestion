@@ -44,6 +44,7 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
+        (Enregistrement, Secteur, Date, Entrees)
         FROM '{chemin_fichier_csv}'
         DELIMITER ','
         CSV HEADER;
@@ -67,6 +68,7 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
+        (Enregistrement, Secteur, Date, Occupation)
         FROM '{chemin_fichier_csv}'
         DELIMITER ','
         CSV HEADER;
