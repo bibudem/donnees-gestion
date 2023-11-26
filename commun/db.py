@@ -35,9 +35,33 @@ def executer_requete(conn, requete_sql, logger):
     try:
         with conn.cursor() as cursor:
             cursor.execute(requete_sql)
-            logger.info(f"Requête exécutée avec succès : {requete_sql}")
             conn.commit()
     except Exception as e:
         logger.error(f"Erreur lors de l'exécution de la requête : {e}")
         conn.rollback()
         raise
+
+def executer_requete_select(cursor, requete_sql, logger):
+    try:
+        cursor.execute(requete_sql)
+    except Exception as e:
+        logger.error(f"Erreur lors de l'exécution de la requête : {e}")
+        raise
+
+def prefixe_sha256():
+    config = configparser.ConfigParser()
+    config.read('../config/_db.ini')
+    return config['database']['prefixe']
+
+def suffixe_sha256():
+    config = configparser.ConfigParser()
+    config.read('../config/_db.ini')
+    return config['database']['suffixe']
+
+def cursor2csv(resultats, noms_colonnes, sep = "\t"):
+    texte_delimite = ""
+    if resultats:
+        texte_delimite = sep.join(noms_colonnes) + '\n'
+        texte_delimite += '\n'.join(sep.join(map(str, ligne)) for ligne in resultats)
+    
+    return texte_delimite

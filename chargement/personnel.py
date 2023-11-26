@@ -1,6 +1,7 @@
 import configparser
 import logging
 import psycopg2
+from datetime import datetime, timedelta
 import argparse
 import sys
 import os
@@ -10,6 +11,7 @@ from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_req
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour charger les données du personnel dans l\'entrepôt')
+    parser.add_argument('--jour', default=None, help='Date (aaaa-mm-jj) qui correspond aux données chargées')
     parser.add_argument('--fichier', required=True, help='Chemin du fichier CSV du personnel à charger')
     return parser.parse_args()
 
@@ -46,6 +48,13 @@ try:
         DELIMITER ','
         CSV HEADER;
     """
+    executer_requete(connexion, requete, logger)
+
+    # On va ajuster la date du jour
+    jour = args.jour
+    if jour is None:
+        jour = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+    requete = f"UPDATE {nom_table} SET jour = '{jour}'"
     executer_requete(connexion, requete, logger)
 
 finally:

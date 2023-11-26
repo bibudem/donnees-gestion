@@ -9,7 +9,7 @@ from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_req
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("creation.py")
+logger = logging.getLogger("utils/creation.py")
 
 # Domaines à créer/supprimer
 domaines = configparser.ConfigParser()
@@ -42,6 +42,28 @@ try:
             );
         """
         executer_requete(connexion, requete, logger)
+
+    # La table des disciplines
+    if (domaines.getboolean('domaines', 'disciplines')):
+        logger.info("Début de la création de la table des disciplines")
+
+        nom_table = "disciplines"
+
+        # On supprime la table si elle existe
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                discipline VARCHAR(255),
+                bibliothecaire VARCHAR(255),
+                bibliotheque VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (discipline, bibliothecaire)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+
 
     # Les réservations de salles
     if (domaines.getboolean('domaines', 'reservations')):
@@ -275,7 +297,7 @@ try:
                 jour date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
-                codebarres VARCHAR(50),
+                codebarres VARCHAR(255),
                 fonction VARCHAR(50),
                 niveau VARCHAR(50),
                 code_programme VARCHAR(10),
@@ -312,6 +334,23 @@ try:
             );
         """
         executer_requete(connexion, requete, logger)
+    
+    # Les tables de vérification
+    if (domaines.getboolean('domaines', 'verifications')):
+
+        # Les codes de cycles
+        nom_table = "_verif_cycles"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                cycle VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (cycle)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
 
 finally:
     # Fermeture de la connexion
