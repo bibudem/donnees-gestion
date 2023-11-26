@@ -83,6 +83,8 @@ try:
                 location_name VARCHAR(255),
                 category_name VARCHAR(255),
                 item_name VARCHAR(255),
+                usager VARCHAR(255),
+                discipline VARCHAR(255),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
@@ -351,6 +353,36 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+        # Les status de réservation de salles
+        nom_table = "_verif_statuts_reservations"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                nom VARCHAR(255),
+                conserver BOOLEAN,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (nom)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+    # La table de synonymes
+    if (domaines.getboolean('domaines', 'synonymes')):
+
+        nom_table = "_synonymes"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                domaine VARCHAR(255),
+                rejeter VARCHAR(255),
+                accepter VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (domaine, rejeter)
+            );
+        """
+        executer_requete(connexion, requete, logger)
 
 finally:
     # Fermeture de la connexion
