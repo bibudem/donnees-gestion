@@ -51,7 +51,7 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
 
 
 """
-            # envoyer_courriel("Entrepôt de données - Nouveaux cycles d'études", intro + "\n\n" + res, logger)
+            envoyer_courriel("Entrepôt de données - Nouveaux cycles d'études", intro + "\n\n" + res, logger)
 
     # On peut maintenant inscrire le niveau
     requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 1er cycle' WHERE substring(codecycle, 1, 1) = '1'"
@@ -85,7 +85,7 @@ Vous devez vérifier les codes de programme ci-dessous et les ajouter dans la ta
 
 
 """
-            # envoyer_courriel("Entrepôt de données - Nouveaux programmes d'études", intro + res, logger)
+            envoyer_courriel("Entrepôt de données - Nouveaux programmes d'études", intro + res, logger)
 
     # On insère la discipline
     requete = f"""
@@ -120,7 +120,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
 
 
 """
-            # envoyer_courriel("Entrepôt de données - Disciplines non définies", intro + res, logger)
+            envoyer_courriel("Entrepôt de données - Disciplines non définies", intro + res, logger)
 
     requete = f"""
         UPDATE {nom_table}
