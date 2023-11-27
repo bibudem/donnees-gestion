@@ -132,7 +132,6 @@ if access_token:
     resultats = paginer_api(url_api + "/events", access_token, params_page, config.getint('evenements', 'page'))
 
     # On écrit le fichier CSV
-#        print(resultats)
     convertir_json_en_csv(resultats, args.fichier_sortie)
 
 else:

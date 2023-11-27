@@ -38,8 +38,9 @@ try:
     requete = f"DELETE FROM {nom_table} t WHERE EXISTS (SELECT 1 FROM _verif_statuts_reservations v WHERE v.nom = t.status AND NOT(v.conserver))"
     executer_requete(connexion, requete, logger)
 
-    # On supprime les tests
+    # On supprime les tests et les formations
     requete = f"DELETE FROM {nom_table} t WHERE t.location_name = 'Bibliothèque de test'"
+    requete = f"DELETE FROM {nom_table} t WHERE t.location_name = 'Bibliothèque de formation'"
     executer_requete(connexion, requete, logger)
 
     # On vérifie si on a de nouveaux statuts
