@@ -16,7 +16,7 @@ def parse_arguments():
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("reservations.py")
+logger = logging.getLogger("chargement/reservations.py")
 
 # Les arguments en ligne de commande
 args = parse_arguments()

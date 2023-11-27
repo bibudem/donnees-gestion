@@ -119,8 +119,7 @@ if access_token:
 
     # On va boucler par groupe de 10 jours
     for debut, fin in generer_intervalles(date_debut, date_fin, 10):
-        print(f"De {debut.strftime('%Y-%m-%d')} à {fin.strftime('%Y-%m-%d')}; {(fin - debut).days + 1} jours")
-
+ 
         # On va chercher les données sur les événements pour la période
         params = {'date': debut.strftime("%Y-%m-%d"), 'days': (fin - debut).days, 'limit': config.getint('evenements', 'page'), 'cal_id': 7690}
         nouveaux_evenements = appel_api(url_api + "/events", access_token, params)

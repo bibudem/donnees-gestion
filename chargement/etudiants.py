@@ -18,7 +18,7 @@ def parse_arguments():
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("etudiants.py")
+logger = logging.getLogger("chargement/etudiants.py")
 
 # Les arguments en ligne de commande
 args = parse_arguments()
@@ -54,7 +54,7 @@ try:
     jour = args.jour
     if jour is None:
         jour = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-    requete = f"UPDATE {nom_table} SET jour = '{jour}'"
+    requete = f"UPDATE {nom_table} SET journee = '{jour}'"
     executer_requete(connexion, requete, logger)
 
 

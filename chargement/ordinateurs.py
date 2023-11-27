@@ -16,7 +16,7 @@ def parse_arguments():
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("ordinateurs.py")
+logger = logging.getLogger("chargement/ordinateurs.py")
 
 # Les arguments en ligne de commande
 args = parse_arguments()

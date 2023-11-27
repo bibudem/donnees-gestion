@@ -135,9 +135,9 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     # On suppose ici qu'on conserve tous les étudiants (pas de critères d'élimination)
     requete = f"""
         INSERT INTO _clientele_cumul
-        (jour, usager, courriel, codebarres, fonction, niveau, code_programme, programme, discipline, bibliotheque)
+        (journee, usager, courriel, codebarres, fonction, niveau, code_programme, programme, discipline, bibliotheque)
         SELECT 
-            jour,
+            journee,
             sha256(concat('{prefixe}', login, '{suffixe}')::bytea)::varchar,
             sha256(concat('{prefixe}', courriel, '{suffixe}')::bytea)::varchar,
             sha256(concat('{prefixe}', codebarres, '{suffixe}')::bytea)::varchar,
@@ -150,7 +150,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         FROM _tmp_etudiants
         ON CONFLICT (usager) DO UPDATE
         SET
-            jour = EXCLUDED.jour,
+            journee = EXCLUDED.journee,
             courriel = EXCLUDED.courriel,
             codebarres = EXCLUDED.codebarres, 
             fonction = EXCLUDED.fonction,
