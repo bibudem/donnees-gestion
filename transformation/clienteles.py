@@ -52,22 +52,7 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
 
 """
             envoyer_courriel("Entrepôt de données - Nouveaux cycles d'études", intro + "\n\n" + res, logger)
-
-    # On peut maintenant inscrire le niveau
-    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 1er cycle' WHERE substring(codecycle, 1, 1) = '1'"
-    executer_requete(connexion, requete, logger)
-    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 2e cycle' WHERE substring(codecycle, 1, 1) = '2'"
-    executer_requete(connexion, requete, logger)
-    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 3e cycle' WHERE substring(codecycle, 1, 1) = '3'"
-    executer_requete(connexion, requete, logger)
-    requete = f"UPDATE {nom_table} SET niveau = 'Postdoctorat' WHERE substring(codecycle, 1, 1) = '4'"
-    executer_requete(connexion, requete, logger)
-    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - Médecine 3e cycle' WHERE substring(codecycle, 1, 1) = '6'"
-    executer_requete(connexion, requete, logger)
-    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - Certificat' WHERE substring(codecycle, 1, 1) = 'C'"
-    executer_requete(connexion, requete, logger)
-
-    # La discipline
+            sys.exit(1)
 
     # On vérifie si on a de nouveaux codes de programmes
     requete = f"SELECT codeprogramme, programme from {nom_table} WHERE codeprogramme NOT IN (SELECT code FROM programmes) GROUP BY codeprogramme, programme ORDER BY codeprogramme;"
@@ -86,6 +71,21 @@ Vous devez vérifier les codes de programme ci-dessous et les ajouter dans la ta
 
 """
             envoyer_courriel("Entrepôt de données - Nouveaux programmes d'études", intro + res, logger)
+            sys.exit(1)
+
+    # On peut maintenant inscrire le niveau
+    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 1er cycle' WHERE substring(codecycle, 1, 1) = '1'"
+    executer_requete(connexion, requete, logger)
+    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 2e cycle' WHERE substring(codecycle, 1, 1) = '2'"
+    executer_requete(connexion, requete, logger)
+    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - 3e cycle' WHERE substring(codecycle, 1, 1) = '3'"
+    executer_requete(connexion, requete, logger)
+    requete = f"UPDATE {nom_table} SET niveau = 'Postdoctorat' WHERE substring(codecycle, 1, 1) = '4'"
+    executer_requete(connexion, requete, logger)
+    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - Médecine 3e cycle' WHERE substring(codecycle, 1, 1) = '6'"
+    executer_requete(connexion, requete, logger)
+    requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - Certificat' WHERE substring(codecycle, 1, 1) = 'C'"
+    executer_requete(connexion, requete, logger)
 
     # On insère la discipline
     requete = f"""
@@ -121,6 +121,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
 
 """
             envoyer_courriel("Entrepôt de données - Disciplines non définies", intro + res, logger)
+            sys.exit(1)
 
     requete = f"""
         UPDATE {nom_table}
@@ -161,7 +162,11 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     """
     executer_requete(connexion, requete, logger)
 
+    # On va supprimer les données temporaires
+    requete = f"DELETE FROM {nom_table}"
+    executer_requete(connexion, requete, logger)
 
+    # TODO: il faudra charger la table clienteles si args.session est vrai
 
 finally:
     # On ferme la connexion

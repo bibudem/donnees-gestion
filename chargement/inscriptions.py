@@ -34,10 +34,6 @@ try:
     # Connexion à la base de données
     connexion = se_connecter_a_la_base_de_donnees(logger)
 
-    # On commence par supprimer toute donnée dans la table temporaire
-    requete = f"DELETE FROM {nom_table};"
-    executer_requete(connexion, requete, logger)
-
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}

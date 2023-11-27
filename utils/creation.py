@@ -160,7 +160,7 @@ try:
                 ID INTEGER,
                 Secteur VARCHAR(100),
                 Station VARCHAR(100),
-                Utlisateur_Login VARCHAR(50),
+                Utilisateur_Login VARCHAR(50),
                 Ouverture_session TIMESTAMP,
                 Fermeture_session TIMESTAMP,
                 Duree INTEGER,

@@ -10,8 +10,8 @@ from logs import initialisation_logs
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour extraire les données d\'utilisation des postes publics dans un fichier CSV')
-    parser.add_argument('--debut', required=True, help='Date de début (aaaa-mm-dd)')
-    parser.add_argument('--fin', required=True, help='Date de fin (aaaa-mm-dd)')
+    parser.add_argument('--date_debut', required=True, help='Date de début (aaaa-mm-dd)')
+    parser.add_argument('--date_fin', required=True, help='Date de fin (aaaa-mm-dd)')
     parser.add_argument('--fichier_sortie', required=True, help='Chemin du fichier CSV de sortie')
     return parser.parse_args()
 
@@ -36,7 +36,7 @@ conn = pyodbc.connect(conn_string)
 cursor = conn.cursor()
 
 # Exécuter une requête SELECT
-cursor.execute(f"SELECT * FROM Enregistrements_calcules WHERE CAST(Ouverture_session AS Date) >= '{args.debut}' AND CAST(Ouverture_session AS Date) <= '{args.fin}'")
+cursor.execute(f"SELECT * FROM Enregistrements_calcules WHERE CAST(Ouverture_session AS Date) >= '{args.date_debut}' AND CAST(Ouverture_session AS Date) <= '{args.date_fin}'")
 
 # Récupérer les résultats
 resultats = cursor.fetchall()

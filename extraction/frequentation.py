@@ -10,8 +10,8 @@ from logs import initialisation_logs
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour extraire les données de fréquentation et d\'occupation dans des fichiers CSV')
-    parser.add_argument('--debut', required=True, help='Date de début (aaaa-mm-dd)')
-    parser.add_argument('--fin', required=True, help='Date de fin (aaaa-mm-dd)')
+    parser.add_argument('--date_debut', required=True, help='Date de début (aaaa-mm-dd)')
+    parser.add_argument('--date_fin', required=True, help='Date de fin (aaaa-mm-dd)')
     parser.add_argument('--fichier_sortie', required=True, help='Chemin du fichier CSV de sortie (sans l\'extension)')
     return parser.parse_args()
 
@@ -38,7 +38,7 @@ cursor = conn.cursor()
 # On commence avec les données de fréquentation
 
 # Exécuter une requête SELECT
-cursor.execute(f"SELECT * FROM Entrees WHERE CAST(Date as Date) >= '{args.debut}' AND CAST(Date as Date) <= '{args.fin}';")
+cursor.execute(f"SELECT * FROM Entrees WHERE CAST(Date as Date) >= '{args.date_debut}' AND CAST(Date as Date) <= '{args.date_fin}';")
 
 # Récupérer les résultats
 resultats = cursor.fetchall()
@@ -60,7 +60,7 @@ with open(args.fichier_sortie + "_frequentation.csv", 'w', newline='') as csvfil
 # On poursuit avec les données d'occupation
 
 # Exécuter une requête SELECT
-cursor.execute(f"SELECT * FROM Occupation WHERE CAST(Date as Date) >= '{args.debut}' AND CAST(Date as Date) <= '{args.fin}';")
+cursor.execute(f"SELECT * FROM Occupation WHERE CAST(Date as Date) >= '{args.date_debut}' AND CAST(Date as Date) <= '{args.date_fin}';")
 
 # Récupérer les résultats
 resultats = cursor.fetchall()
