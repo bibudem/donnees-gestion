@@ -17,7 +17,7 @@ def parse_arguments():
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("frequentation.py")
+logger = logging.getLogger("extraction/frequentation.py")
 
 logger.info(f"Début de l'extraction des données de fréquentation et d'occupation")
 

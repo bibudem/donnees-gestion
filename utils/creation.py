@@ -145,6 +145,47 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les inscriptions
+    if (domaines.getboolean('domaines', 'evenements')):
+
+        nom_table = "evenements"
+
+        # La table temporaire pour le chargement
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        # id,title,start,end,owner.name,presenter
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                id VARCHAR(50),
+                title VARCHAR(255),
+                start TIMESTAMP,
+                finish TIMESTAMP,
+                owner VARCHAR(255),
+                presenter VARCHAR(255),
+                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table qui sera visible dans PowerBI
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        # TODO: pas clair ce qu'on fera avec ça
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                id VARCHAR(50),
+                titre VARCHAR(255),
+                journee DATE,
+                proprietaire VARCHAR(255),
+                presentateur VARCHAR(255),
+                nb_participants INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
     # Les ordinateurs publics
     if (domaines.getboolean('domaines', 'ordinateurs')):
 
@@ -258,7 +299,7 @@ try:
                 courriel VARCHAR(100),
                 login VARCHAR(100),
                 niveau VARCHAR(50),
-                jour DATE,
+                journee DATE,
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (login)
@@ -281,7 +322,7 @@ try:
                 CodeBarres VARCHAR(50),
                 Fonction VARCHAR(255),
                 Login VARCHAR(100),
-                jour DATE,
+                journee DATE,
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
@@ -296,7 +337,7 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
-                jour date,
+                journee date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 codebarres VARCHAR(255),
@@ -320,7 +361,7 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
-                jour date,
+                journee date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 codebarres VARCHAR(50),
@@ -332,7 +373,7 @@ try:
                 unite VARCHAR(255),
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
-                CONSTRAINT pkey_{nom_table} PRIMARY KEY (jour, usager)
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (journee, usager)
             );
         """
         executer_requete(connexion, requete, logger)

@@ -9,14 +9,14 @@ from logs import initialisation_logs
 from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Script pour charger les données d\'inscription aux formations dans l\'entrepôt')
+    parser = argparse.ArgumentParser(description='Script pour charger les événements de formation dans l\'entrepôt')
     parser.add_argument('--fichier', required=True, help='Chemin du fichier CSV à charger')
     return parser.parse_args()
 
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("chargement/inscriptions.py")
+logger = logging.getLogger("chargement/evenements.py")
 
 # Les arguments en ligne de commande
 args = parse_arguments()
@@ -25,7 +25,7 @@ args = parse_arguments()
 chemin_fichier_csv = args.fichier
 
 # Nom de la table dans la base de données
-nom_table = "_tmp_inscriptions"
+nom_table = "_tmp_evenements"
 
 logger.info(f"Début du chargement des inscriptions depuis le fichier {chemin_fichier_csv}")
 
@@ -35,9 +35,10 @@ try:
     connexion = se_connecter_a_la_base_de_donnees(logger)
 
     # Ensuite on charge les données
+    # id,title,start,end,owner.name,presenter
     requete = f"""
         COPY {nom_table}
-        (event_id, booking_id, registration_type, email)
+        (id, title, start, finish, owner, presenter)
         FROM '{chemin_fichier_csv}'
         DELIMITER ','
         CSV HEADER;

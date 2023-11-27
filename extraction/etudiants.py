@@ -15,7 +15,7 @@ def parse_arguments():
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("etudiants.py")
+logger = logging.getLogger("extraction/etudiants.py")
 
 logger.info(f"Début de l'extraction des données des étudiants")
 

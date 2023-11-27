@@ -17,7 +17,7 @@ def parse_arguments():
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("ordinateurs.py")
+logger = logging.getLogger("extraction/ordinateurs.py")
 
 logger.info(f"Début de l'extraction des données d'utilisation des postes publics")
 

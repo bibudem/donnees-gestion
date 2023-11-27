@@ -39,8 +39,7 @@ try:
     executer_requete(connexion, requete, logger)
 
     # On supprime les tests et les formations
-    requete = f"DELETE FROM {nom_table} t WHERE t.location_name = 'Bibliothèque de test'"
-    requete = f"DELETE FROM {nom_table} t WHERE t.location_name = 'Bibliothèque de formation'"
+    requete = f"DELETE FROM {nom_table} t WHERE t.location_name = 'Bibliothèque de test' OR t.location_name = 'Bibliothèque de formation'"
     executer_requete(connexion, requete, logger)
 
     # On vérifie si on a de nouveaux statuts
