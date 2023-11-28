@@ -101,6 +101,7 @@ try:
                 courriel VARCHAR(255),
                 discipline VARCHAR(255),
                 dateheure TIMESTAMP,
+                session DATE,
                 bibliotheque VARCHAR(255),
                 categorie VARCHAR(255),
                 salle VARCHAR(255),
@@ -178,6 +179,7 @@ try:
                 id VARCHAR(50),
                 titre VARCHAR(255),
                 journee DATE,
+                session DATE,
                 proprietaire VARCHAR(255),
                 presentateur VARCHAR(255),
                 nb_participants INTEGER,
@@ -223,6 +225,7 @@ try:
                 ordinateur VARCHAR(100),
                 debut TIMESTAMP,
                 fin TIMESTAMP,
+                session DATE,
                 duree INTEGER,
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager, ordinateur, debut)
             );
@@ -256,7 +259,8 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
-                journee date,
+                journee DATE,
+                session DATE,
                 bibliotheque VARCHAR(100),
                 frequentation INTEGER,
                 occupation INTEGER,
@@ -362,6 +366,7 @@ try:
         requete = f"""
             CREATE TABLE {nom_table} (
                 journee date,
+                session date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 codebarres VARCHAR(50),
