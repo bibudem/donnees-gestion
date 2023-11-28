@@ -107,7 +107,7 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
     # On va copier les données temporaires dans la table finale
     requete = f"""
         INSERT INTO reservations
-        (usager, courriel, discipline, dateheure, bibliotheque, categorie, salle)
+        (usager, courriel, discipline, journee, bibliotheque, categorie, salle)
         SELECT
             usager,
             sha256(concat('{prefixe}', email, '{suffixe}')::bytea)::varchar,
@@ -125,9 +125,9 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
         UPDATE reservations
         SET session = 
             CASE
-                WHEN EXTRACT(MONTH FROM dateheure) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM dateheure)::INTEGER, 9, 1)
-                WHEN EXTRACT(MONTH FROM dateheure) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM dateheure)::INTEGER, 5, 1)
-                ELSE MAKE_DATE(EXTRACT(YEAR FROM dateheure)::INTEGER, 1, 1)
+                WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
+                WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
+                ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
             END
         WHERE session IS NULL;
     """

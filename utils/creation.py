@@ -100,7 +100,7 @@ try:
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 discipline VARCHAR(255),
-                dateheure TIMESTAMP,
+                journee DATE,
                 session DATE,
                 bibliotheque VARCHAR(255),
                 categorie VARCHAR(255),
@@ -223,11 +223,11 @@ try:
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
                 ordinateur VARCHAR(100),
-                debut TIMESTAMP,
-                fin TIMESTAMP,
+                dateheure TIMESTAMP,
+                journee DATE,
                 session DATE,
                 duree INTEGER,
-                CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager, ordinateur, debut)
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager, ordinateur, dateheure)
             );
         """
         executer_requete(connexion, requete, logger)
