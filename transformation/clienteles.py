@@ -54,8 +54,29 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
             envoyer_courriel("Entrepôt de données - Nouveaux cycles d'études", intro + "\n\n" + res, logger)
             sys.exit(1)
 
-    # On vérifie si on a de nouveaux codes de programmes
-    requete = f"SELECT codeprogramme, programme from {nom_table} WHERE codeprogramme NOT IN (SELECT code FROM programmes) GROUP BY codeprogramme, programme ORDER BY codeprogramme;"
+    # On va maintenant inscrire les disciplines
+    requete = f"""
+        UPDATE _tmp_etudiants
+        SET discipline = programmes.discipline
+        FROM programmes
+        WHERE programmes.code = SUBSTRING(_tmp_etudiants.codecycle, 2)
+        AND _tmp_etudiants.discipline IS NULL
+        AND programmes.nom IS NULL
+    """
+    executer_requete(connexion, requete, logger)
+
+    requete = f"""
+        UPDATE _tmp_etudiants
+        SET discipline = programmes.discipline
+        FROM programmes
+        WHERE programmes.code = SUBSTRING(_tmp_etudiants.codecycle, 2)
+        AND programmes.nom = _tmp_etudiants.programme
+        AND _tmp_etudiants.discipline IS NULL
+    """
+    executer_requete(connexion, requete, logger)
+
+    # On vérifie si on a inscrit toutes les disciplines
+    requete = f"SELECT codecycle, codeprogramme, programme, count(*) as Nb FROM _tmp_etudiants WHERE discipline IS NULL GROUP BY codecycle, codeprogramme, programme ORDER BY codecycle;"
     with connexion.cursor() as cursor:
         executer_requete_select(cursor, requete, logger)
         resultats = cursor.fetchall()
@@ -64,9 +85,9 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
             noms_colonnes = [desc[0] for desc in cursor.description]
             res = cursor2csv(resultats, noms_colonnes)
             intro = """
-La vérification des programmes d'étude lors du chargement des étudiants a identifié de nouveaux programmes.
+L'ajout des disciplines aux étudiants n'est pas complet, certains étudiants ont des programmes qui ne figurent pas dans la table des programmes.
 
-Vous devez vérifier les codes de programme ci-dessous et les ajouter dans la table programmes.
+Vous devez vérifier les informations ci-dessous et les ajouter dans la table programmes.
 
 
 """
@@ -85,21 +106,6 @@ Vous devez vérifier les codes de programme ci-dessous et les ajouter dans la ta
     requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - Médecine 3e cycle' WHERE substring(codecycle, 1, 1) = '6'"
     executer_requete(connexion, requete, logger)
     requete = f"UPDATE {nom_table} SET niveau = 'Étudiant - Certificat' WHERE substring(codecycle, 1, 1) = 'C'"
-    executer_requete(connexion, requete, logger)
-
-    # On insère la discipline
-    requete = f"""
-        UPDATE {nom_table}
-        SET discipline = programmes.discipline
-        FROM programmes
-        WHERE {nom_table}.codeprogramme = programmes.code;
-    """
-    executer_requete(connexion, requete, logger)
-    requete = f"""
-        UPDATE {nom_table}
-        SET discipline = 'Inconnue'
-        WHERE NOT EXISTS (SELECT 1 FROM programmes WHERE {nom_table}.codeprogramme = programmes.code);
-    """
     executer_requete(connexion, requete, logger)
 
     # La bibliothèque (depuis la table des disciplines)
@@ -164,6 +170,88 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
 
     # On va supprimer les données temporaires
     requete = f"DELETE FROM {nom_table}"
+    executer_requete(connexion, requete, logger)
+
+    # Le personnel
+    # Les statuts:
+    #   - Q: personnel retraité (on peut les supprimer)
+    #   - X: professeurs retraités (on peut les supprimer)
+    #   - P: personnel régulier (on les conserve dans _cumul)
+    #   - T: personnel temporaire (on les conserver dans _cumul)
+    #   - R: professeurs
+    #   - C: chargés de cours
+    #       - Ensemble ils sont dans 155 unités différentes
+
+    # On supprime les retraités
+    requete = "DELETE FROM _tmp_personnel WHERE (statut = 'Q' OR statut = 'X');"
+    executer_requete(connexion, requete, logger)
+
+    # On supprime les login en double (ça arrive parfois)
+    requete = "DELETE FROM _tmp_personnel WHERE id IN (SELECT MIN(id) FROM _tmp_personnel t GROUP BY t.login HAVING COUNT(t.login) > 1);"
+    executer_requete(connexion, requete, logger)
+
+    # On supprime les usagers ssans login (ne devrait pas arriver, mais c'est une clé primaire)
+    requete = "DELETE FROM _tmp_personnel WHERE (login IS NULL);"
+    executer_requete(connexion, requete, logger)
+
+    # On ajuste les fonctions et les niveaux
+    requete = "UPDATE _tmp_personnel SET fonction = 'Chargé de cours', niveau = 'Chargé de cours' WHERE statut = 'C';"
+    executer_requete(connexion, requete, logger)
+    requete = "UPDATE _tmp_personnel SET fonction = 'Professeur', niveau = 'Professeur' WHERE statut = 'R';"
+    executer_requete(connexion, requete, logger)
+    requete = "UPDATE _tmp_personnel SET fonction = 'Personnel' WHERE (statut = 'P' OR statut = 'T');"
+    executer_requete(connexion, requete, logger)
+
+    # On ajoute la discipline en fonction du code de l'unité
+    requete = """
+        UPDATE _tmp_personnel
+        SET discipline = unites.discipline
+        FROM unites
+        WHERE codeunite = unites.code
+    """
+    executer_requete(connexion, requete, logger)
+    
+    # On ajoute la bibliothèque en fonction de la discipline
+    requete = """
+        UPDATE _tmp_personnel
+        SET bibliotheque = disciplines.bibliotheque
+        FROM disciplines
+        WHERE _tmp_personnel.discipline = disciplines.discipline
+    """
+    executer_requete(connexion, requete, logger)
+
+    # On va copier les données temporaires dans la table cumulative
+    requete = f"""
+        INSERT INTO _clientele_cumul
+        (journee, usager, courriel, codebarres, fonction, code_unite, unite, niveau, discipline, bibliotheque)
+        SELECT 
+            journee,
+            sha256(concat('{prefixe}', login, '{suffixe}')::bytea)::varchar,
+            sha256(concat('{prefixe}', courriel, '{suffixe}')::bytea)::varchar,
+            sha256(concat('{prefixe}', codebarres, '{suffixe}')::bytea)::varchar,
+            fonction,
+            codeunite,
+            descunite,
+            niveau,
+            discipline,
+            bibliotheque
+        FROM _tmp_personnel
+        ON CONFLICT (usager) DO UPDATE
+        SET
+            journee = EXCLUDED.journee,
+            courriel = EXCLUDED.courriel,
+            codebarres = EXCLUDED.codebarres, 
+            fonction = EXCLUDED.fonction,
+            code_unite = EXCLUDED.code_unite,
+            unite = EXCLUDED.unite,
+            niveau = EXCLUDED.niveau,
+            discipline = EXCLUDED.discipline,
+            bibliotheque = EXCLUDED.bibliotheque;
+    """
+    executer_requete(connexion, requete, logger)
+
+    # On supprime les données temporaires
+    requete = "DELETE FROM _tmp_personnel"
     executer_requete(connexion, requete, logger)
 
     # TODO: il faudra charger la table clienteles si args.session est vrai
