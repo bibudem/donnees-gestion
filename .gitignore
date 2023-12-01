@@ -6,7 +6,7 @@ __pycache__/
 *.pyc
 
 # Les fichiers de config cachés
-config/_*.ini
+_*.ini
 
 # Les logs
 logs/*.log

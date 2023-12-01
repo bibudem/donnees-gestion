@@ -7,7 +7,7 @@ def se_connecter_a_la_base_de_donnees(logger):
 
     # Configuration de la base de données
     config = configparser.ConfigParser()
-    config.read('../config/_db.ini')
+    config.read('_config.ini')
 
     try:
         conn = psycopg2.connect(
@@ -50,12 +50,12 @@ def executer_requete_select(cursor, requete_sql, logger):
 
 def prefixe_sha256():
     config = configparser.ConfigParser()
-    config.read('../config/_db.ini')
+    config.read('_config.ini')
     return config['database']['prefixe']
 
 def suffixe_sha256():
     config = configparser.ConfigParser()
-    config.read('../config/_db.ini')
+    config.read('_config.ini')
     return config['database']['suffixe']
 
 def cursor2csv(resultats, noms_colonnes, sep = "\t"):

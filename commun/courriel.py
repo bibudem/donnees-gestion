@@ -8,7 +8,7 @@ def envoyer_courriel(objet, contenu, logger):
 
     # Configuration courriel
     config = configparser.ConfigParser()
-    config.read('../config/_courriel.ini')
+    config.read('_config.ini')
 
     if (config.getboolean('email', 'envoyer')):
 

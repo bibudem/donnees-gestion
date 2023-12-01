@@ -5,7 +5,7 @@ import configparser
 import argparse
 import sys
 import os
-sys.path.append(os.path.abspath("../commun"))
+sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
 
 def parse_arguments():
@@ -23,13 +23,13 @@ logger.info(f"Début de l'extraction des données de fréquentation et d'occupat
 
 # Configuration de l'accès à la base de données
 config = configparser.ConfigParser()
-config.read('../config/_frequentation.ini')
+config.read('_config.ini')
 
 # Lest arguments en ligne de commande
 args = parse_arguments()
 
 # Établir une connexion à la base de données
-conn_string = f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={config['sqlserver']['server']};DATABASE={config['sqlserver']['database']};UID={config['sqlserver']['username']};PWD={config['sqlserver']['password']};TrustServerCertificate=yes"
+conn_string = f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={config['sqlserver-freq']['server']};DATABASE={config['sqlserver-freq']['database']};UID={config['sqlserver-freq']['username']};PWD={config['sqlserver-freq']['password']};TrustServerCertificate=yes"
 conn = pyodbc.connect(conn_string)
 
 # Créer un curseur
