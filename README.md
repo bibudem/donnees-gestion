@@ -6,7 +6,7 @@ Ce dépôt contient différents script pour extraire et manipuler les données d
 
 ### Connexion à la base de données
 
-Un fichier de configuration `config/_db.ini` doit contenir les informations de connexion à la base de données. Il n'est pas dans l'entrepôt Git pour ne pas exposer ces informations.
+Un fichier de configuration `_config.ini` doit contenir les informations de connexion à la base de données. Il n'est pas dans l'entrepôt Git pour ne pas exposer ces informations.
 
 Voici un exemple de fichier:
 
@@ -23,11 +23,11 @@ port = 5432
 
 Les différents scripts utlisent un journal (logs) commun.
 
-C'est le fichier `config/_logs.ini` qui contient les informations, et il doit avoir ces informations:
+C'est le fichier `_config.ini` qui contient les informations, et il doit avoir ces informations:
 
 ```ini
 [logs]
-fichier = ../logs/entrepot.log
+fichier = logs/entrepot.log
 niveau = INFO
 ```
 
@@ -48,7 +48,7 @@ reservations = TRUE
 
 Pour chaque domaine de données, si la valeur est TRUE, les tables seront supprimées et recréées. S'il est à FALSE, elles ne seront pas touchées.
 
-Une fois ce fichier créé, et les informations de connexion à la base de données bien inscrites dans `config/_db.ini`, on peut exécuter le script sans paramètres:
+Une fois ce fichier créé, et les informations de connexion à la base de données bien inscrites dans `_config.ini`, on peut exécuter le script sans paramètres:
 
 ```bash
 python creation.py

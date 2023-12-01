@@ -3,7 +3,7 @@ import psycopg2
 import logging
 import sys
 import os
-sys.path.append(os.path.abspath("../commun"))
+sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
 from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
 
@@ -13,7 +13,7 @@ logger = logging.getLogger("utils/creation.py")
 
 # Domaines à créer/supprimer
 domaines = configparser.ConfigParser()
-domaines.read('../config/_creation.ini')
+domaines.read('_config.ini')
 
 # Requêtes de création de tables
 try:

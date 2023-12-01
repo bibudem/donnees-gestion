@@ -4,7 +4,7 @@ import configparser
 import argparse
 import sys
 import os
-sys.path.append(os.path.abspath("../commun"))
+sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
 
 def parse_arguments():

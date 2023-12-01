@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import argparse
 import sys
 import os
-sys.path.append(os.path.abspath("../commun"))
+sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
 from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
 

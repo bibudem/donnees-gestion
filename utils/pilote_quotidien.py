@@ -19,7 +19,7 @@ def parse_arguments():
 
 args = parse_arguments()
 config = configparser.ConfigParser()
-config.read('../config/_quotidien.ini')
+config.read('_config.ini')
 
 dossier_sortie = os.path.abspath(args.dossier_temp)
 if not (os.path.exists(dossier_sortie) and os.path.isdir(dossier_sortie) and os.access(dossier_sortie, os.W_OK)):
@@ -39,15 +39,13 @@ journee_actuelle = datetime.now().strftime("%Y-%m-%d")
 # Extraction des données
 journee_extraction = (datetime.strptime(journee_actuelle, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
 fichier_csv = f"{dossier_sortie}{os.path.sep}ordinateurs-{journee_extraction}.csv"
-script = "../extraction/ordinateurs.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script, "--date_debut", journee_extraction, "--date_fin", journee_extraction, "--fichier_sortie", fichier_csv], cwd=dossier_script, capture_output=True, text=True)
+script = "extraction/ordinateurs.py"
+resultat = subprocess.run(["python", script, "--date_debut", journee_extraction, "--date_fin", journee_extraction, "--fichier_sortie", fichier_csv], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)
 
 # Chargement des données
-script = "../chargement/ordinateurs.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script, "--fichier", fichier_csv], cwd=dossier_script, capture_output=True, text=True)
+script = "chargement/ordinateurs.py"
+resultat = subprocess.run(["python", script, "--fichier", fichier_csv], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)
 
 # Transformation des données
@@ -63,37 +61,32 @@ resultat = subprocess.run(["python", script, "--fichier", fichier_csv], cwd=doss
 
 # Extraction des données
 
-fichier_synchro = config['clienteles']['synchro_ac']
+fichier_synchro = config['quotidien']['synchro_ac']
 fichier_csv_ac = f"{dossier_sortie}{os.path.sep}etudiants.csv"
-script = "../extraction/etudiants.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script, "--fichier_entree", fichier_synchro, "--fichier_sortie", fichier_csv_ac], cwd=dossier_script, capture_output=True, text=True)
+script = "extraction/etudiants.py"
+resultat = subprocess.run(["python", script, "--fichier_entree", fichier_synchro, "--fichier_sortie", fichier_csv_ac], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)
 
-fichier_synchro = config['clienteles']['synchro_rh']
+fichier_synchro = config['quotidien']['synchro_rh']
 fichier_csv_rh = f"{dossier_sortie}{os.path.sep}personnel.csv"
-script = "../extraction/personnel.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script, "--fichier_entree", fichier_synchro, "--fichier_sortie", fichier_csv_rh], cwd=dossier_script, capture_output=True, text=True)
+script = "extraction/personnel.py"
+resultat = subprocess.run(["python", script, "--fichier_entree", fichier_synchro, "--fichier_sortie", fichier_csv_rh], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)
 
 # Chargement des données
 
 journee_extraction = (datetime.strptime(journee_actuelle, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
 
-script = "../chargement/etudiants.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script, "--jour", journee_extraction, "--fichier", fichier_csv_ac], cwd=dossier_script, capture_output=True, text=True)
+script = "chargement/etudiants.py"
+resultat = subprocess.run(["python", script, "--jour", journee_extraction, "--fichier", fichier_csv_ac], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)
 
-script = "../chargement/personnel.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script, "--jour", journee_extraction, "--fichier", fichier_csv_rh], cwd=dossier_script, capture_output=True, text=True)
+script = "chargement/personnel.py"
+resultat = subprocess.run(["python", script, "--jour", journee_extraction, "--fichier", fichier_csv_rh], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)
 
 # Transformation des données
 
-script = "../transformation/clienteles.py"
-dossier_script = os.path.dirname(script)
-resultat = subprocess.run(["python", script], cwd=dossier_script, capture_output=True, text=True)
+script = "transformation/clienteles.py"
+resultat = subprocess.run(["python", script], capture_output=True, text=True)
 #TODO: gestion des erreurs avec resultat.returncode et resultat.stdout (ou stderr)

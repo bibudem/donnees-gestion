@@ -6,7 +6,7 @@ import logging
 import configparser
 import sys
 import os
-sys.path.append(os.path.abspath("../commun"))
+sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
 
 def obtenir_token(url_token, client_id, client_secret):
@@ -84,7 +84,7 @@ logger = logging.getLogger("extraction/inscriptions.py")
 
 # Accès LibCal
 config = configparser.ConfigParser()
-config.read('../config/_libcal.ini')
+config.read('_config.ini')
 
 # Les arguments en ligne de commande
 args = parse_arguments()
