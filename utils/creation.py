@@ -325,6 +325,7 @@ try:
                 journee DATE,
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
+                clientele BOOLEAN,
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (login)
             );
         """
@@ -344,11 +345,13 @@ try:
                 Courriel VARCHAR(255),
                 CodeBarres VARCHAR(50),
                 Fonction VARCHAR(255),
+                nfonction VARCHAR(255),
                 Login VARCHAR(100),
                 niveau VARCHAR(50),
                 journee DATE,
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
+                clientele BOOLEAN,
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
@@ -373,6 +376,7 @@ try:
                 unite VARCHAR(255),
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
+                clientele BOOLEAN,
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager)
             );
         """
@@ -389,7 +393,7 @@ try:
                 session date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
-                codebarres VARCHAR(50),
+                codebarres VARCHAR(255),
                 fonction VARCHAR(50),
                 niveau VARCHAR(50),
                 code_programme VARCHAR(10),

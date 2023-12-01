@@ -11,7 +11,7 @@ from courriel import envoyer_courriel
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour effectuer les validations et transformations sur les clientèles dans l\'entrepôt')
-    parser.add_argument('--session', action='store_true', help='Si présent, va faire le chargement des clientèles de la session')
+    parser.add_argument('--session', help='Si présent, le chargement de la clientèle de session sera effectué avec la date spécifiée')
     return parser.parse_args()
 
 
@@ -137,11 +137,16 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     """
     executer_requete(connexion, requete, logger)
 
+    # Tous les étudiants font partie de la table finale
+    # des clientèles, alors on met le booléen à true
+    requete = "UPDATE _tmp_etudiants SET clientele = true"
+    executer_requete(connexion, requete, logger)
+
     # On va copier les données temporaires dans la table cumulative
     # On suppose ici qu'on conserve tous les étudiants (pas de critères d'élimination)
     requete = f"""
         INSERT INTO _clientele_cumul
-        (journee, usager, courriel, codebarres, fonction, niveau, code_programme, programme, discipline, bibliotheque)
+        (journee, usager, courriel, codebarres, fonction, niveau, code_programme, programme, discipline, bibliotheque, clientele)
         SELECT 
             journee,
             sha256(concat('{prefixe}', login, '{suffixe}')::bytea)::varchar,
@@ -152,7 +157,8 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             codeprogramme,
             programme,
             discipline,
-            bibliotheque
+            bibliotheque,
+            clientele
         FROM _tmp_etudiants
         ON CONFLICT (usager) DO UPDATE
         SET
@@ -164,7 +170,8 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             code_programme = EXCLUDED.code_programme,
             programme = EXCLUDED.programme,
             discipline = EXCLUDED.discipline,
-            bibliotheque = EXCLUDED.bibliotheque;
+            bibliotheque = EXCLUDED.bibliotheque,
+            clientele = EXCLUDED.clientele;
     """
     executer_requete(connexion, requete, logger)
 
@@ -195,11 +202,11 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     executer_requete(connexion, requete, logger)
 
     # On ajuste les fonctions et les niveaux
-    requete = "UPDATE _tmp_personnel SET fonction = 'Chargé de cours', niveau = 'Chargé de cours' WHERE statut = 'C';"
+    requete = "UPDATE _tmp_personnel SET nfonction = 'Chargé de cours', niveau = 'Chargé de cours' WHERE statut = 'C';"
     executer_requete(connexion, requete, logger)
-    requete = "UPDATE _tmp_personnel SET fonction = 'Professeur', niveau = 'Professeur' WHERE statut = 'R';"
+    requete = "UPDATE _tmp_personnel SET nfonction = 'Professeur', niveau = 'Professeur' WHERE statut = 'R';"
     executer_requete(connexion, requete, logger)
-    requete = "UPDATE _tmp_personnel SET fonction = 'Personnel' WHERE (statut = 'P' OR statut = 'T');"
+    requete = "UPDATE _tmp_personnel SET nfonction = 'Personnel' WHERE (statut = 'P' OR statut = 'T');"
     executer_requete(connexion, requete, logger)
 
     # On ajoute la discipline en fonction du code de l'unité
@@ -220,21 +227,49 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     """
     executer_requete(connexion, requete, logger)
 
+    # On va ajuster la colonne qui indique si on le veut
+    # dans les clientèles
+
+    # Pour le personnel: non
+    requete = "UPDATE _tmp_personnel SET clientele = false WHERE (statut = 'P' OR statut = 'T')"
+    executer_requete(connexion, requete, logger)
+
+    # Pour les chargés de cours, selon la fonction
+    requete = "UPDATE _tmp_personnel SET clientele = false WHERE statut = 'C'"
+    executer_requete(connexion, requete, logger)
+    requete = "UPDATE _tmp_personnel SET clientele = true WHERE statut = 'C' AND fonction IN ('Chargé(e) de cours')"
+    executer_requete(connexion, requete, logger)
+
+    # Pour les professeurs, selon la fonction
+    requete = "UPDATE _tmp_personnel SET clientele = false WHERE statut = 'R'"
+    executer_requete(connexion, requete, logger)
+    requete = """
+        UPDATE _tmp_personnel SET clientele = true
+        WHERE statut = 'R' AND
+        (
+            fonction LIKE 'Chercheur%' OR
+            fonction LIKE 'Enseignant%' OR
+            (fonction LIKE 'Prof%' AND NOT fonction LIKE '%clini%')
+        );
+    """
+    executer_requete(connexion, requete, logger)
+
     # On va copier les données temporaires dans la table cumulative
     requete = f"""
         INSERT INTO _clientele_cumul
-        (journee, usager, courriel, codebarres, fonction, code_unite, unite, niveau, discipline, bibliotheque)
+        (journee, usager, courriel, codebarres, fonction, code_unite, unite, niveau, discipline, bibliotheque, clientele)
         SELECT 
             journee,
             sha256(concat('{prefixe}', login, '{suffixe}')::bytea)::varchar,
             sha256(concat('{prefixe}', courriel, '{suffixe}')::bytea)::varchar,
             sha256(concat('{prefixe}', codebarres, '{suffixe}')::bytea)::varchar,
-            fonction,
+            nfonction,
             codeunite,
             descunite,
             niveau,
             discipline,
-            bibliotheque
+            bibliotheque,
+            clientele
         FROM _tmp_personnel
         ON CONFLICT (usager) DO UPDATE
         SET
@@ -246,7 +281,8 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             unite = EXCLUDED.unite,
             niveau = EXCLUDED.niveau,
             discipline = EXCLUDED.discipline,
-            bibliotheque = EXCLUDED.bibliotheque;
+            bibliotheque = EXCLUDED.bibliotheque,
+            clientele = EXCLUDED.clientele;
     """
     executer_requete(connexion, requete, logger)
 
@@ -256,7 +292,51 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     requete = "DELETE FROM _tmp_etudiants"
     executer_requete(connexion, requete, logger)
 
-    # TODO: il faudra charger la table clienteles si args.session est vrai
+    # Si nécessaire, on fait un chargement dans la table de clientèle
+    if (args.session):
+
+        # La journée des données
+        jour = args.session
+
+        # On ne peut pas avoir des données pour une même journée
+        requete = f"DELETE FROM clientele WHERE journee = '{jour}'"
+        executer_requete(connexion, requete, logger)
+
+        # Normalement la table _clientele_cuml est prête
+        requete = f"""
+            INSERT INTO clientele (journee, usager, courriel, codebarres, fonction, niveau, code_programme, programme, code_unite, unite, discipline, bibliotheque)
+            SELECT
+                journee,
+                usager,
+                courriel,
+                codebarres,
+                fonction,
+                niveau,
+                code_programme,
+                programme,
+                code_unite,
+                unite,
+                discipline,
+                bibliotheque
+            FROM _clientele_cumul
+            WHERE _clientele_cumul.journee = '{jour}'
+            AND _clientele_cumul.clientele = true
+        """
+        executer_requete(connexion, requete, logger)
+
+
+        # On va inscrire la donnée de session depuis la date
+        requete = """
+            UPDATE clientele
+            SET session = 
+                CASE
+                    WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
+                    WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
+                    ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
+                END
+            WHERE session IS NULL;
+        """
+        executer_requete(connexion, requete, logger)
 
 finally:
     # On ferme la connexion
