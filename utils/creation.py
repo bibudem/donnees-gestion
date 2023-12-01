@@ -222,10 +222,13 @@ try:
                 ID INTEGER,
                 Secteur VARCHAR(100),
                 Station VARCHAR(100),
-                Utilisateur_Login VARCHAR(50),
+                Utilisateur_Login VARCHAR(255),
                 Ouverture_session TIMESTAMP,
                 Fermeture_session TIMESTAMP,
                 Duree INTEGER,
+                courriel VARCHAR(255),
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(255),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
@@ -241,10 +244,11 @@ try:
                 courriel VARCHAR(255),
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
-                ordinateur VARCHAR(100),
-                dateheure TIMESTAMP,
-                journee DATE,
                 session DATE,
+                journee DATE,
+                dateheure TIMESTAMP,
+                lieu VARCHAR(255),
+                ordinateur VARCHAR(255),
                 duree INTEGER,
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (usager, ordinateur, dateheure)
             );
