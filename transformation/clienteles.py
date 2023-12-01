@@ -168,10 +168,6 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     """
     executer_requete(connexion, requete, logger)
 
-    # On va supprimer les données temporaires
-    requete = f"DELETE FROM {nom_table}"
-    executer_requete(connexion, requete, logger)
-
     # Le personnel
     # Les statuts:
     #   - Q: personnel retraité (on peut les supprimer)
@@ -192,6 +188,10 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
 
     # On supprime les usagers ssans login (ne devrait pas arriver, mais c'est une clé primaire)
     requete = "DELETE FROM _tmp_personnel WHERE (login IS NULL);"
+    executer_requete(connexion, requete, logger)
+
+    # On supprime les personnes qui sont aussi étudiants (on priorise les étudiants)
+    requete = "DELETE FROM _tmp_personnel WHERE login in (SELECT login FROM _tmp_etudiants);"
     executer_requete(connexion, requete, logger)
 
     # On ajuste les fonctions et les niveaux
@@ -252,6 +252,8 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
 
     # On supprime les données temporaires
     requete = "DELETE FROM _tmp_personnel"
+    executer_requete(connexion, requete, logger)
+    requete = "DELETE FROM _tmp_etudiants"
     executer_requete(connexion, requete, logger)
 
     # TODO: il faudra charger la table clienteles si args.session est vrai
