@@ -34,11 +34,11 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
                 code VARCHAR(50),
-                nom VARCHAR(255),
-                departement VARCHAR(255),
+                nom VARCHAR(255) NULL,
                 discipline VARCHAR(255),
-                CONSTRAINT pkey_{nom_table} PRIMARY KEY (code)
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -59,6 +59,25 @@ try:
                 bibliothecaire VARCHAR(255),
                 bibliotheque VARCHAR(255),
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (discipline, bibliothecaire)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+
+    # La table des unités
+    if (domaines.getboolean('domaines', 'unites')):
+        logger.info("Début de la création de la table des unités")
+
+        # On supprime la table si elle existe
+        executer_requete(connexion, "DROP TABLE IF EXISTS unites", logger)
+
+        # Création de la table
+        requete = """
+            CREATE TABLE unites (
+                code VARCHAR(255),
+                nom VARCHAR(255),
+                discipline VARCHAR(255),
+                CONSTRAINT pkey_unites PRIMARY KEY (code)
             );
         """
         executer_requete(connexion, requete, logger)
@@ -326,6 +345,7 @@ try:
                 CodeBarres VARCHAR(50),
                 Fonction VARCHAR(255),
                 Login VARCHAR(100),
+                niveau VARCHAR(50),
                 journee DATE,
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
