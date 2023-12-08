@@ -42,12 +42,31 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
-        (discipline, bibliothecaire, bibliotheque)
+        (discipline, bibliothecaire, bibliotheque, secteur)
         FROM '{chemin_fichier_csv}'
         DELIMITER ';'
         CSV HEADER;
     """
     executer_requete(connexion, requete, logger)
+
+    # Ajout du secteur de la bibliothèque
+    requete = f"""
+        UPDATE {nom_table}
+        SET secteur = CASE
+            WHEN bibliotheque = 'Aménagement' THEN 'TGDAMLD'
+            WHEN bibliotheque = 'Droit' THEN 'TGDAMLD'
+            WHEN bibliotheque = 'Thèrèse-Gouin-Décarie' THEN 'TGDAMLD'
+            WHEN bibliotheque = 'Campus de Laval' THEN 'TGDAMLD'
+            WHEN bibliotheque = 'Musique' THEN 'TGDAMLD'
+            WHEN bibliotheque = 'Mathématiques et informatique' THEN 'Santé Sciences'
+            WHEN bibliotheque = 'Marguerite-d’Youville' THEN 'Santé Sciences'
+            WHEN bibliotheque = 'Médecine vétérinaire' THEN 'Santé Sciences'
+            WHEN bibliotheque = 'Santé' THEN 'Santé Sciences'
+            WHEN bibliotheque = 'Sciences' THEN 'Santé Sciences'
+            WHEN bibliotheque = 'Lettres et sciences humaines' THEN 'Lettres et sciences humaines'
+           ELSE 'Non déterminé'
+        END;
+"""
 
 finally:
     # On ferme la connexion
