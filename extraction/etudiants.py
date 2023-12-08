@@ -29,7 +29,7 @@ positions_champs = [(11, 25), (423, 428), (458, 464), (468, 498), (498, 567), (5
 # Ouvrir le fichier de données à largeur fixe en mode lecture
 with open(args.fichier_entree, 'r', encoding='ISO-8859-1') as fichier_entree:
     # Ouvrir le fichier CSV en mode écriture
-    with open(args.fichier_sortie, 'w', newline='') as fichier_sortie:
+    with open(args.fichier_sortie, 'w', encoding='utf8', newline='') as fichier_sortie:
         # Créer un objet writer pour écrire dans le fichier CSV
         writer = csv.writer(fichier_sortie)
 
