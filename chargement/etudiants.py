@@ -43,7 +43,7 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
-        (codebarres, codeCycle, codeProgramme, programme, courriel, login)
+        (codebarres, session, codeCycle, codeProgramme, programme, courriel, login)
         FROM '{chemin_fichier_csv}'
         DELIMITER ','
         CSV HEADER;
