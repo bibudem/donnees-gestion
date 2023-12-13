@@ -9,14 +9,14 @@ from logs import initialisation_logs
 from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Script pour charger les données de disciplines dans l\'entrepôt')
+    parser = argparse.ArgumentParser(description='Script pour charger les données de secteurs dans l\'entrepôt')
     parser.add_argument('--fichier', required=True, help='Chemin du fichier CSV à charger')
     return parser.parse_args()
 
 
 # Configuration du journal
 initialisation_logs()
-logger = logging.getLogger("chargement/disciplines.py")
+logger = logging.getLogger("chargement/secteurs.py")
 
 # Les arguments en ligne de commande
 args = parse_arguments()
@@ -26,7 +26,7 @@ chemin_fichier_csv = args.fichier
 
 # Nom de la table dans la base de données
 # Elle sera vidée avant le chargement
-nom_table = "disciplines"
+nom_table = "secteurs"
 
 logger.info(f"Début du chargement des disciplines depuis le fichier {chemin_fichier_csv}")
 
@@ -42,36 +42,13 @@ try:
     # Ensuite on charge les données
     requete = f"""
         COPY {nom_table}
-        (discipline, bibliothecaire, bibliotheque)
+        (bibliotheque, secteur)
         FROM '{chemin_fichier_csv}'
         DELIMITER ';'
         CSV HEADER;
     """
     executer_requete(connexion, requete, logger)
 
-    # Ajout du secteur de la bibliothèque
-    requete = f"""
-        UPDATE {nom_table} D
-            SET secteur = (
-                SELECT secteur
-                FROM secteurs S
-                WHERE D.bibliotheque = S.bibliotheque
-                );
-"""
-    executer_requete(connexion, requete, logger)
-
-    # Ajout du facteur de calcul pour chaque paire de bibliothécaire et de discipline
-    requete = f"""
-            UPDATE disciplines 
-                SET facteur = 1.0/subquery.count
-                    FROM (
-                        SELECT discipline, COUNT(*) as count
-                        FROM disciplines
-                        GROUP BY discipline
-                         ) AS subquery
-                    WHERE disciplines.discipline = subquery.discipline;
-"""
-    executer_requete(connexion, requete, logger)
 
 finally:
     # On ferme la connexion
