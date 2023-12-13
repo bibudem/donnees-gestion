@@ -302,9 +302,25 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         requete = f"DELETE FROM clientele WHERE journee = '{jour}'"
         executer_requete(connexion, requete, logger)
 
+
+        # On va inscrire le nom de la session depuis la date et qui servira aux rapports PowewrBI (ex.:Automne 2023)
+        logger.info(f"Mise a jour de la colonne session de la table _clientele_cumul")
+        requete = """
+            UPDATE _clientele_cumul
+                SET session = 
+                    CASE 
+                        WHEN EXTRACT(MONTH FROM journee) BETWEEN 1 AND 4 AND EXTRACT(DAY FROM journee) BETWEEN 1 AND 31 THEN 'Hiver ' || EXTRACT(YEAR FROM journee)::text
+                        WHEN EXTRACT(MONTH FROM journee) BETWEEN 5 AND 8 AND EXTRACT(DAY FROM journee) BETWEEN 1 AND 31 THEN 'Printemps ' || EXTRACT(YEAR FROM journee)::text
+                        WHEN EXTRACT(MONTH FROM journee) BETWEEN 9 AND 12 AND EXTRACT(DAY FROM journee) BETWEEN 1 AND 31 THEN 'Automne ' || EXTRACT(YEAR FROM journee)::text
+                    END
+            WHERE session IS NULL;
+        """
+        executer_requete(connexion, requete, logger)
+        
+
         # Normalement la table _clientele_cuml est prête
         requete = f"""
-            INSERT INTO clientele (journee, usager, courriel, codebarres, fonction, niveau, code_programme, programme, code_unite, unite, discipline, bibliotheque)
+            INSERT INTO clientele (journee, usager, courriel, codebarres, fonction, niveau, session, code_programme, programme, code_unite, unite, discipline, bibliotheque)
             SELECT
                 journee,
                 usager,
@@ -312,6 +328,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
                 codebarres,
                 fonction,
                 niveau,
+                session,
                 code_programme,
                 programme,
                 code_unite,
@@ -324,19 +341,6 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         """
         executer_requete(connexion, requete, logger)
 
-
-        # On va inscrire la donnée de session depuis la date
-        requete = """
-            UPDATE clientele
-            SET session = 
-                CASE
-                    WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
-                    WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
-                    ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
-                END
-            WHERE session IS NULL;
-        """
-        executer_requete(connexion, requete, logger)
 
 finally:
     # On ferme la connexion

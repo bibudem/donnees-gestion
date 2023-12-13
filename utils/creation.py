@@ -43,6 +43,26 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+        # La table des secteurs dans lesquels se retrouvent les bibliotheques
+
+    if (domaines.getboolean('domaines', 'secteurs')):
+        logger.info("Début de la création de la table des secteurs")
+
+        nom_table = "secteurs"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                bibliotheque VARCHAR(100),
+                secteur VARCHAR(100),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (bibliotheque)
+            );
+        """
+        logger.info("Fin de la création de la table des secteurs")
+        executer_requete(connexion, requete, logger)
+
+
     # La table des disciplines
     if (domaines.getboolean('domaines', 'disciplines')):
         logger.info("Début de la création de la table des disciplines")
