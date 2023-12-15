@@ -307,12 +307,12 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         logger.info(f"Mise a jour de la colonne session de la table _clientele_cumul")
         requete = """
             UPDATE _clientele_cumul
-                SET session = 
-                    CASE 
-                        WHEN EXTRACT(MONTH FROM journee) BETWEEN 1 AND 4 AND EXTRACT(DAY FROM journee) BETWEEN 1 AND 31 THEN 'Hiver ' || EXTRACT(YEAR FROM journee)::text
-                        WHEN EXTRACT(MONTH FROM journee) BETWEEN 5 AND 8 AND EXTRACT(DAY FROM journee) BETWEEN 1 AND 31 THEN 'Printemps ' || EXTRACT(YEAR FROM journee)::text
-                        WHEN EXTRACT(MONTH FROM journee) BETWEEN 9 AND 12 AND EXTRACT(DAY FROM journee) BETWEEN 1 AND 31 THEN 'Automne ' || EXTRACT(YEAR FROM journee)::text
-                    END
+            SET session = 
+                CASE
+                    WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
+                    WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
+                    ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
+                END
             WHERE session IS NULL;
         """
         executer_requete(connexion, requete, logger)
@@ -338,6 +338,45 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             FROM _clientele_cumul
             WHERE _clientele_cumul.journee = '{jour}'
             AND _clientele_cumul.clientele = true
+        """
+        executer_requete(connexion, requete, logger)
+
+        # Ajout du facteur pour diviser une discipline couverte par plus d'un bibliothécaire
+        requete = f"""
+            UPDATE disciplines 
+            SET facteur = 1.0/subquery.count
+            FROM (
+                SELECT discipline, COUNT(*) as count
+                FROM disciplines
+                GROUP BY discipline
+                ) AS subquery
+            WHERE disciplines.discipline = subquery.discipline
+            AND facteur IS NULL;
+        """
+        executer_requete(connexion, requete, logger)
+
+
+        # On réinitialise la table des statistiques
+        requete = f"DELETE FROM disciplines_stats"
+        executer_requete(connexion, requete, logger)
+
+
+        # Remplissage de la table statistiques
+        requete = f"""
+            INSERT INTO disciplines_stats (discipline, bibliothecaire, fonction, niveau, bibliotheque, secteur, nb_personnes)
+            SELECT
+            D.discipline,
+            D.bibliothecaire,
+            C.fonction,
+            C.niveau,
+            D.bibliotheque,
+            D.secteur,
+            COUNT(C.usager) * D.facteur AS nb_personnes
+            FROM disciplines D
+            INNER JOIN clientele C ON D.discipline = C.discipline
+            WHERE C.fonction <> 'Personnel'
+            GROUP BY D.discipline, D.bibliothecaire,  C.fonction,  C.niveau, D.bibliotheque, D.secteur
+            ORDER BY D.discipline, D.bibliothecaire, C.fonction, C.niveau, D.bibliotheque, D.secteur;
         """
         executer_requete(connexion, requete, logger)
 

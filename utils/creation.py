@@ -433,6 +433,30 @@ try:
             );
         """
         executer_requete(connexion, requete, logger)
+
+
+        # Création de la table statistiques de la clientèle
+
+    if (domaines.getboolean('domaines', 'usagers_stats')):
+        logger.info("Début de la création de la table des statistiques des usagers")
+
+        nom_table = "disciplines_stats"
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        requete = f"""
+            CREATE TABLE {nom_table}  (
+            discipline VARCHAR(255),
+            bibliothecaire VARCHAR(255),
+            bibliotheque VARCHAR(255),
+            secteur VARCHAR(255),
+            fonction VARCHAR(255),
+            niveau VARCHAR(255),
+            nb_personnes NUMERIC,
+            CONSTRAINT pkey_disciplines_stats PRIMARY KEY (discipline, bibliothecaire, fonction, niveau)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
     
     # Les tables de vérification
     if (domaines.getboolean('domaines', 'verifications')):
