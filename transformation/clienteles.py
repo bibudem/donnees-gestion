@@ -54,6 +54,14 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
             envoyer_courriel("Entrepôt de données - Nouveaux cycles d'études", intro + "\n\n" + res, logger)
             sys.exit(1)
 
+    requete = f"""
+        UPDATE _tmp_etudiants
+        SET discipline = programmes_laval.discipline
+        FROM programmes_laval
+        WHERE programmes_laval.codeprogramme = _tmp_etudiants.codeprogramme;
+    """
+    executer_requete(connexion, requete, logger)
+
     # On va maintenant inscrire les disciplines
     requete = f"""
         UPDATE _tmp_etudiants
@@ -74,6 +82,7 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
         AND _tmp_etudiants.discipline IS NULL
     """
     executer_requete(connexion, requete, logger)
+
 
     # On vérifie si on a inscrit toutes les disciplines
     requete = f"SELECT codecycle, codeprogramme, programme, count(*) as Nb FROM _tmp_etudiants WHERE discipline IS NULL GROUP BY codecycle, codeprogramme, programme ORDER BY codecycle;"
