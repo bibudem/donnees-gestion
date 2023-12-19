@@ -54,11 +54,13 @@ Vous devez vérifier le premier caractère des codes de cycle ci-dessous et les 
             envoyer_courriel("Entrepôt de données - Nouveaux cycles d'études", intro + "\n\n" + res, logger)
             sys.exit(1)
 
+    # On va maintenant inscrire les disciplines pour les programmes du Campus Laval
+
     requete = f"""
         UPDATE _tmp_etudiants
         SET discipline = programmes_laval.discipline
         FROM programmes_laval
-        WHERE programmes_laval.codeprogramme = _tmp_etudiants.codeprogramme;
+        WHERE _tmp_etudiants.codeprogramme = programmes_laval.codeprogramme;
     """
     executer_requete(connexion, requete, logger)
 
