@@ -49,7 +49,7 @@ cursor.close()
 conn.close()
 
 # Écrire les résultats dans un fichier CSV
-with open(args.fichier_sortie, 'w', newline='') as csvfile:
+with open(args.fichier_sortie, 'w', encoding='utf8', newline='') as csvfile:
     writer = csv.writer(csvfile)
     
     # Écrire les noms de colonnes
