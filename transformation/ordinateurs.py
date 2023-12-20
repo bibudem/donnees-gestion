@@ -38,7 +38,7 @@ try:
     executer_requete(connexion, requete, logger)
 
     # On vérifie si on a les bons noms de bibliothèque
-    requete = "SELECT t.Secteur FROM _tmp_sessions_ordinateurs t WHERE t.Secteur NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Ordinateurs') GROUP BY t.Secteur"
+    requete = "SELECT t.Secteur FROM _tmp_sessions_ordinateurs t WHERE t.Secteur NOT IN (SELECT s.accepter FROM _synonymes s WHERE s.domaine = 'Ordinateurs') GROUP BY t.Secteur"
     with connexion.cursor() as cursor:
         executer_requete_select(cursor, requete, logger)
         resultats = cursor.fetchall()
