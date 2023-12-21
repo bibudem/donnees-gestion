@@ -63,7 +63,7 @@ Vous devez vérifier la table _verif_statuts_reservations pour ajouter les noms 
             sys.exit(1)
 
     # On vérifie si on a les bons noms de bibliothèque
-    requete = f"SELECT t.location_name FROM {nom_table} t WHERE t.location_name NOT IN (SELECT s.accepter FROM _synonymes s WHERE s.domaine = 'Réservations') GROUP BY t.location_name"
+    requete = f"SELECT t.location_name FROM {nom_table} t WHERE t.location_name NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Réservations') GROUP BY t.location_name"
     with connexion.cursor() as cursor:
         executer_requete_select(cursor, requete, logger)
         resultats = cursor.fetchall()
