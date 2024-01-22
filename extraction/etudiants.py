@@ -24,7 +24,7 @@ args = parse_arguments()
 
 # Définir les positions de début et de fin de chaque champ
 # Positions: à compter de 0, et la deuxième valeur n'est pas incluse
-positions_champs = [(11, 25), (385, 389), (423, 428), (458, 464), (468, 498), (498, 567), (568, 598)]
+positions_champs = [(11, 25), (423, 428), (458, 464), (468, 498), (498, 567), (568, 598)]
 
 # Ouvrir le fichier de données à largeur fixe en mode lecture
 with open(args.fichier_entree, 'r', encoding='ISO-8859-1') as fichier_entree:
@@ -34,13 +34,15 @@ with open(args.fichier_entree, 'r', encoding='ISO-8859-1') as fichier_entree:
         writer = csv.writer(fichier_sortie)
 
         # Écrire l'en-tête du fichier CSV si nécessaire
-        writer.writerow(['codebarres', 'session', 'codeCycle', 'codeProgramme', 'programme', 'courriel', 'login'])
+        writer.writerow(['codebarres', 'codeCycle', 'codeProgramme', 'programme', 'courriel', 'login'])
 
         # Lire chaque ligne du fichier de données à largeur fixe
         for ligne in fichier_entree:
             # Extraire les champs en fonction des positions spécifiées
             champs_extraits = [ligne[start:end].strip() for start, end in positions_champs]
 
-            # Écrire les champs extraits dans le fichier CSV
-            writer.writerow(champs_extraits)
+            # Vérifier si la colonne "login" est nulle ou vide
+            if champs_extraits[-1]:  # -1 correspond à la dernière colonne, supposée être "login"
+                # Écrire les champs extraits dans le fichier CSV
+                writer.writerow(champs_extraits)
 

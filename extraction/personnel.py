@@ -41,6 +41,8 @@ with open(args.fichier_entree, 'r', encoding='ISO-8859-1') as fichier_entree:
             # Extraire les champs en fonction des positions spécifiées
             champs_extraits = [ligne[start:end].strip() for start, end in positions_champs]
 
-            # Écrire les champs extraits dans le fichier CSV
-            writer.writerow(champs_extraits)
+            # Vérifier si la colonne "login" est nulle ou vide
+            if champs_extraits[-1]:  # -1 correspond à la dernière colonne, supposée être "login"
+                # Écrire les champs extraits dans le fichier CSV
+                writer.writerow(champs_extraits)
 
