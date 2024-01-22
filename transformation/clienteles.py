@@ -170,19 +170,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             discipline,
             bibliotheque,
             clientele
-        FROM _tmp_etudiants
-        ON CONFLICT (usager) DO UPDATE
-        SET
-            journee = EXCLUDED.journee,
-            courriel = EXCLUDED.courriel,
-            codebarres = EXCLUDED.codebarres, 
-            fonction = EXCLUDED.fonction,
-            niveau = EXCLUDED.niveau,
-            code_programme = EXCLUDED.code_programme,
-            programme = EXCLUDED.programme,
-            discipline = EXCLUDED.discipline,
-            bibliotheque = EXCLUDED.bibliotheque,
-            clientele = EXCLUDED.clientele;
+        FROM _tmp_etudiants;
     """
     executer_requete(connexion, requete, logger)
 
@@ -281,19 +269,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             discipline,
             bibliotheque,
             clientele
-        FROM _tmp_personnel
-        ON CONFLICT (usager) DO UPDATE
-        SET
-            journee = EXCLUDED.journee,
-            courriel = EXCLUDED.courriel,
-            codebarres = EXCLUDED.codebarres, 
-            fonction = EXCLUDED.fonction,
-            code_unite = EXCLUDED.code_unite,
-            unite = EXCLUDED.unite,
-            niveau = EXCLUDED.niveau,
-            discipline = EXCLUDED.discipline,
-            bibliotheque = EXCLUDED.bibliotheque,
-            clientele = EXCLUDED.clientele;
+        FROM _tmp_personnel;
     """
     executer_requete(connexion, requete, logger)
 
@@ -391,6 +367,15 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         """
         executer_requete(connexion, requete, logger)
 
+# Pour nettoyer les multiples occurences des usagers
+"""
+DELETE FROM _clientele_cumul
+WHERE (usager, journee) NOT IN (
+  SELECT usager, MAX(journee) AS max_journee
+  FROM _clientele_cumul
+  GROUP BY usager
+);
+"""
 
 finally:
     # On ferme la connexion
