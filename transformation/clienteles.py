@@ -368,14 +368,14 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         executer_requete(connexion, requete, logger)
 
 # Pour nettoyer les multiples occurences des usagers
-"""
-DELETE FROM _clientele_cumul
-WHERE (usager, journee) NOT IN (
-  SELECT usager, MAX(journee) AS max_journee
-  FROM _clientele_cumul
-  GROUP BY usager
-);
-"""
+        requete = f"""
+            DELETE FROM _clientele_cumul
+            WHERE (usager, journee) NOT IN (
+                SELECT usager, MAX(journee) AS max_journee
+                FROM _clientele_cumul
+                GROUP BY usager
+                );
+        """
 
 finally:
     # On ferme la connexion
