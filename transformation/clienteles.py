@@ -350,7 +350,7 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
 
         # Remplissage de la table statistiques
         requete = f"""
-            INSERT INTO disciplines_stats (discipline, bibliothecaire, fonction, niveau, bibliotheque, secteur, nb_personnes)
+            INSERT INTO disciplines_stats (discipline, bibliothecaire, fonction, niveau, bibliotheque, secteur, session, nb_personnes)
             SELECT
             D.discipline,
             D.bibliothecaire,
@@ -358,12 +358,13 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             C.niveau,
             D.bibliotheque,
             D.secteur,
+            C.session,
             COUNT(C.usager) * D.facteur AS nb_personnes
             FROM disciplines D
             INNER JOIN clientele C ON D.discipline = C.discipline
             WHERE C.fonction <> 'Personnel'
-            GROUP BY D.discipline, D.bibliothecaire,  C.fonction,  C.niveau, D.bibliotheque, D.secteur
-            ORDER BY D.discipline, D.bibliothecaire, C.fonction, C.niveau, D.bibliotheque, D.secteur;
+            GROUP BY D.discipline, D.bibliothecaire,  C.fonction,  C.niveau, D.bibliotheque, D.secteur, C.session
+            ORDER BY D.discipline, D.bibliothecaire, C.fonction, C.niveau, D.bibliotheque, D.secteur, C.session;
         """
         executer_requete(connexion, requete, logger)
 
