@@ -450,8 +450,9 @@ try:
             secteur VARCHAR(255),
             fonction VARCHAR(255),
             niveau VARCHAR(255),
+            session VARCHAR(255),
             nb_personnes NUMERIC,
-            CONSTRAINT pkey_disciplines_stats PRIMARY KEY (discipline, bibliothecaire, fonction, niveau)
+            CONSTRAINT pkey_disciplines_stats PRIMARY KEY (discipline, bibliothecaire, fonction, niveau, session)
             );
         """
         executer_requete(connexion, requete, logger)
