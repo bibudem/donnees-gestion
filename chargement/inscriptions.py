@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
-from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
+from db import se_connecter_a_la_base_de_donnees, fermer_connexion, prefixe_sha256, suffixe_sha256, executer_requete
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour charger les données d\'inscription aux formations dans l\'entrepôt')
@@ -17,6 +17,10 @@ def parse_arguments():
 # Configuration du journal
 initialisation_logs()
 logger = logging.getLogger("chargement/inscriptions.py")
+
+# Le préfixe et le suffixe pour les sha256
+prefixe = prefixe_sha256()
+suffixe = suffixe_sha256()
 
 # Les arguments en ligne de commande
 args = parse_arguments()
@@ -41,6 +45,14 @@ try:
         FROM '{chemin_fichier_csv}'
         DELIMITER ','
         CSV HEADER;
+    """
+    executer_requete(connexion, requete, logger)
+
+    # On transforme la forme du courriel pour le rendred illisible
+    # On copie proprietaire dans presentateur si ce dernier est 'null'
+    requete = f"""
+        UPDATE {nom_table}
+        SET email = sha256(concat('{prefixe}', email, '{suffixe}')::bytea)::varchar;
     """
     executer_requete(connexion, requete, logger)
 

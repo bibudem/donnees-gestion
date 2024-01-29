@@ -47,7 +47,7 @@ try:
         UPDATE inscriptions i
         SET usager = c.usager, discipline = c.discipline
         FROM _clientele_cumul c
-        WHERE sha256(concat('prefixe_sha256()', i.courriel, 'suffixe_sha256()')::bytea)::varchar = c.courriel;
+        WHERE i.courriel = c.courriel;
     """
     executer_requete(connexion, requete, logger)
 
