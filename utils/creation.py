@@ -457,6 +457,53 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les emprunts de documents
+    if (domaines.getboolean('domaines', 'emprunts')):
+
+        nom_table = "emprunts"
+
+        # La table temporaire pour le chargement
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                cb_document VARCHAR(255),
+                cote VARCHAR(255),
+                institution_pret VARCHAR(255),
+                bibliotheque_pret VARCHAR(255),
+                cb_usager VARCHAR(255),
+                date VARCHAR(255),
+                bibliotheque_document VARCHAR(255),
+                institution_doc VARCHAR(255),
+                institution_usager VARCHAR(255),
+                CONSTRAINT pkey_tmp_emprunts PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table qui sera visible dans PowerBI
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                cb_document VARCHAR(255),
+                cote VARCHAR(255),
+                institution_pret VARCHAR(255),
+                bibliotheque_pret VARCHAR(255),
+                cb_usager VARCHAR(255),
+                date DATE,
+                bibliotheque_document VARCHAR(255),
+                institution_doc VARCHAR(255),
+                institution_usager VARCHAR(255),
+                CONSTRAINT pkey_emprunts PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
     
     # Les tables de vérification
     if (domaines.getboolean('domaines', 'verifications')):

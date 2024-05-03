@@ -40,7 +40,7 @@ try:
         COPY {nom_table}
         (domaine, rejeter, accepter)
         FROM '{chemin_fichier_csv}'
-        DELIMITER ','
+        DELIMITER '\t'
         CSV HEADER;
     """
     executer_requete(connexion, requete, logger)
