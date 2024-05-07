@@ -5,7 +5,7 @@ Ce dépôt contient différents scripts pour extraire et manipuler les données 
 Les manipulations sont divisées en trois grandes parties:
 
 1. **Extraction**: les données sont extraites depuis les fichiers ou systèmes sources et stockées dans un fichier temporaire.
-2. **Chargement**: les données sont lues dans les fichiers temporaires pour être chargés tels quels - ou à peu près - dans l'entrepôt de données, dans des tables temporaires et non exposées.
+2. **Chargement**: les données sont lues dans les fichiers temporaires pour être chargées telles quelles - ou à peu près - dans l'entrepôt de données, dans des tables temporaires et non exposées.
 3. **Transformation**: les données des tables temporaires sont manipulées puis transférées vers des tables définitives, sur lesquelles des rapports peuvent être constuits.
 
 ## Aperçu des sources de données
