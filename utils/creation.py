@@ -79,6 +79,7 @@ try:
                 bibliothecaire VARCHAR(255),
                 bibliotheque VARCHAR(255),
                 secteur VARCHAR(255),
+                facteur NUMERIC,
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (discipline, bibliothecaire)
             );
         """
