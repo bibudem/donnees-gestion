@@ -43,12 +43,37 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
-        # La table des secteurs dans lesquels se retrouvent les bibliotheques
 
+    # La table des programmes de l'Université Laval
+    if (domaines.getboolean('domaines', 'programmes_laval')):
+        logger.info("Début de la création de la table des disciplines ULaval")
+
+        nom_table = "programmes_laval"
+
+        # On supprime la table si elle existe
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                codeprogramme VARCHAR(50),
+                code VARCHAR(50),
+                nom VARCHAR(255) NULL,
+                discipline VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)    
+    
+    
+    # La table des secteurs dans lesquels se retrouvent les bibliotheques
     if (domaines.getboolean('domaines', 'secteurs')):
         logger.info("Début de la création de la table des secteurs")
 
         nom_table = "secteurs"
+        
+        # On supprime la table si elle existe
         executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
 
         # Création de la table
@@ -103,7 +128,6 @@ try:
             );
         """
         executer_requete(connexion, requete, logger)
-
 
 
     # Les réservations de salles
@@ -187,7 +211,7 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
-    # Les inscriptions
+    # Les évènements
     if (domaines.getboolean('domaines', 'evenements')):
 
         nom_table = "evenements"
@@ -238,7 +262,6 @@ try:
         executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
 
         # Création de la table
-
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
                 ID INTEGER,
@@ -286,7 +309,6 @@ try:
         executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
 
         # Création de la table
-
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
                 Enregistrement INTEGER,
@@ -330,9 +352,9 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+
     # Les fichiers Synchro (étudiants et personnel)
     if (domaines.getboolean('domaines', 'synchro')):
-
 
         # La table temporaire pour le chargement des étudiants
         nom_table = "etudiants"
@@ -435,8 +457,7 @@ try:
         executer_requete(connexion, requete, logger)
 
 
-        # Création de la table statistiques de la clientèle
-
+    # Création de la table statistiques de la clientèle
     if (domaines.getboolean('domaines', 'usagers_stats')):
         logger.info("Début de la création de la table des statistiques des usagers")
 
