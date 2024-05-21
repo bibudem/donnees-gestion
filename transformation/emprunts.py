@@ -14,13 +14,6 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour effectuer les validations et transformations des données sur les emprunts dans l\'entrepôt')
     return parser.parse_args()
 
-def is_valid_date(date_str):
-    try:
-        datetime.strptime(date_str, '%Y-%m-%d')
-        return True
-    except ValueError:
-        return False
-
 # Configuration du journal
 initialisation_logs()
 logger = logging.getLogger("transformation/emprunts.py")
