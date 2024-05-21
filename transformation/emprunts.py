@@ -4,6 +4,7 @@ import psycopg2
 import argparse
 import sys
 import os
+from datetime import datetime
 sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
 from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete, prefixe_sha256, suffixe_sha256, cursor2csv, executer_requete_select
@@ -13,6 +14,12 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour effectuer les validations et transformations des données sur les emprunts dans l\'entrepôt')
     return parser.parse_args()
 
+def is_valid_date(date_str):
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 
 # Configuration du journal
 initialisation_logs()
@@ -31,16 +38,12 @@ try:
     connexion = se_connecter_a_la_base_de_donnees(logger)
 
     # Travail sur la table temporaire des réservations
-    logger.info(f"Début de la transformation des données sur les emprunts")
+    logger.info("Début de la transformation des données sur les emprunts")
 
     # On vérifie si on a les bons noms d'institutions
 #    requete = """
 #        SELECT DISTINCT institution
 #        FROM (
-#            SELECT t.institution_pret AS institution
-#            FROM _tmp_emprunts t
-#            WHERE t.institution_pret NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
-#            UNION
 #            SELECT t.institution_doc AS institution
 #            FROM _tmp_emprunts t
 #            WHERE t.institution_doc NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
@@ -65,40 +68,41 @@ try:
     #        envoyer_courriel("Entrepôt de données - Nouvelles institutions pour les emprunts", intro + res, logger)
     #        sys.exit(1)
 
-    # On corrige les noms de institutions
-    requete = f"""
+    # Vérification et correction des noms d'institutions
+    requete = """
         UPDATE _tmp_emprunts t
         SET
-            institution_pret = CASE
-                                   WHEN EXISTS (SELECT 1 FROM _synonymes s WHERE t.institution_pret = s.rejeter AND s.domaine = 'Emprunts')
-                                   THEN (SELECT s.accepter FROM _synonymes s WHERE t.institution_pret = s.rejeter AND s.domaine = 'Emprunts')
-                                   ELSE t.institution_pret
-                                END,
-            institution_doc = CASE
-                                  WHEN EXISTS (SELECT 1 FROM _synonymes s WHERE t.institution_doc = s.rejeter AND s.domaine = 'Emprunts')
-                                  THEN (SELECT s.accepter FROM _synonymes s WHERE t.institution_doc = s.rejeter AND s.domaine = 'Emprunts')
-                                  ELSE t.institution_doc
-                              END,
-            institution_usager = CASE
-                                     WHEN EXISTS (SELECT 1 FROM _synonymes s WHERE t.institution_usager = s.rejeter AND s.domaine = 'Emprunts')
-                                     THEN (SELECT s.accepter FROM _synonymes s WHERE t.institution_usager = s.rejeter AND s.domaine = 'Emprunts')
-                                     ELSE t.institution_usager
-                                 END
+            bibliotheque_pret = COALESCE(
+                (SELECT s.accepter FROM _synonymes s WHERE t.bibliotheque_pret = s.rejeter AND s.domaine = 'Emprunts'),
+                t.bibliotheque_pret
+            ),
+            institution_doc = COALESCE(
+                (SELECT s.accepter FROM _synonymes s WHERE t.institution_doc = s.rejeter AND s.domaine = 'Emprunts'),
+                t.institution_doc
+            ),
+            institution_usager = COALESCE(
+                (SELECT s.accepter FROM _synonymes s WHERE t.institution_usager = s.rejeter AND s.domaine = 'Emprunts'),
+                t.institution_usager
+            )
         WHERE
-            EXISTS (SELECT 1 FROM _synonymes s WHERE (t.institution_pret = s.rejeter OR t.institution_doc = s.rejeter OR t.institution_usager = s.rejeter) AND s.domaine = 'Emprunts')
+            EXISTS (
+                SELECT 1 FROM _synonymes s 
+                WHERE (t.bibliotheque_pret = s.rejeter OR t.institution_doc = s.rejeter OR t.institution_usager = s.rejeter) 
+                AND s.domaine = 'Emprunts'
+            )
     """
     executer_requete(connexion, requete, logger)
 
-    # REMPLACER NOMS DE BIBLIOTHEQUE DES AUTRES INSITUTIONS PAR UN SEUL TERME 'Bibliothèque Extérieure'
-    requete = f"""
+    # Remplacer le nom des bibliothèques des autres institutions par un seul terme 'Bibliothèque Extérieure'
+    requete = """
         UPDATE _tmp_emprunts
         SET bibliotheque_pret = 'Bibliothèque extérieure', bibliotheque_document = 'Bibliothèque extérieure'
-        WHERE institution_doc NOT LIKE '%Université de Montréal%' OR institution_pret NOT LIKE '%Université de Montréal%';
+        WHERE institution_doc NOT LIKE '%Université de Montréal%';
         """
     executer_requete(connexion, requete, logger)
 
-    # VERIFICATION DE NOMS DE BIBLIOTHEQUES
-#    requete = f"""
+    # Vérification si de nouveaux noms de bibliothèques non pris en charge ont été ajoutés
+#    requete = """
 #        SELECT DISTINCT succursale
 #        FROM (
 #            SELECT t.bibliotheque_pret AS succursale
@@ -126,41 +130,60 @@ try:
 #            sys.exit(1)
 
 
-    # REMPLACER LES TERMES REJETÉS PAR LES TERMES ACCEPTÉS
+    # Vérification et correction des noms de bibliothèques
 
-    requete = f"""
+    requete = """
         UPDATE _tmp_emprunts t
         SET
-            bibliotheque_pret = CASE
-                                   WHEN EXISTS (SELECT 1 FROM _synonymes s WHERE t.bibliotheque_pret = s.rejeter AND s.domaine = 'Emprunts')
-                                   THEN (SELECT s.accepter FROM _synonymes s WHERE t.bibliotheque_pret = s.rejeter AND s.domaine = 'Emprunts')
-                                   ELSE t.bibliotheque_pret
-                                END,
-            bibliotheque_document = CASE
-                                  WHEN EXISTS (SELECT 1 FROM _synonymes s WHERE t.bibliotheque_document = s.rejeter AND s.domaine = 'Emprunts')
-                                  THEN (SELECT s.accepter FROM _synonymes s WHERE t.bibliotheque_document = s.rejeter AND s.domaine = 'Emprunts')
-                                  ELSE t.bibliotheque_document
-                              END
+            bibliotheque_pret = COALESCE(
+                (SELECT s.accepter FROM _synonymes s WHERE t.bibliotheque_pret = s.rejeter AND s.domaine = 'Emprunts'),
+                t.bibliotheque_pret
+            ),
+            bibliotheque_document = COALESCE(
+                (SELECT s.accepter FROM _synonymes s WHERE t.bibliotheque_document = s.rejeter AND s.domaine = 'Emprunts'),
+                t.bibliotheque_document
+            )
         WHERE
-            EXISTS (SELECT 1 FROM _synonymes s WHERE (t.bibliotheque_pret = s.rejeter OR t.bibliotheque_document = s.rejeter) AND s.domaine = 'Emprunts')
+            EXISTS (
+                SELECT 1 FROM _synonymes s 
+                WHERE (t.bibliotheque_pret = s.rejeter OR t.bibliotheque_document = s.rejeter) 
+                AND s.domaine = 'Emprunts'
+            )
     """
     executer_requete(connexion, requete, logger)
 
 
     ### EST-CE QU'ON AJOUTE LES DONNEES DISCIPLINE?
 
+    # Vérification des dates -- Envoi d'un courriel si certaines dates ne correspondent pas au format YYYY-mm-dd HH:MM:SS malgré les scripts d'extraction et de chargement
+    requete = """
+        SELECT *
+        FROM _tmp_emprunts
+        WHERE NOT (date ~ '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$')
+    """
+    with connexion.cursor() as cursor:
+        cursor.execute(requete)
+        resultats = cursor.fetchall()
+        if resultats:
+                noms_colonnes = [desc[0] for desc in cursor.description]
+                res = cursor2csv(resultats, noms_colonnes)
+                intro = """
+                    La vérification a identifié des dates incorrectes. 
 
-    # On va copier les données temporaires dans la table finale
+                    Vous devez vérifier les données suivantes :
+                """
+                envoyer_courriel("Entrepôt de données - Dates incorrectes pour les emprunts", intro + res, logger)
+
+    # Copie des données temporaires dans la table finale
     requete = f"""
         INSERT INTO emprunts
-        (cb_document, cote, institution_pret, bibliotheque_pret, cb_usager, date, bibliotheque_document, institution_doc, institution_usager)
+        (cb_document, cote, bibliotheque_pret, cb_usager, date, bibliotheque_document, institution_doc, institution_usager)
         SELECT
             cb_document,
             cote,
-            institution_pret,
             bibliotheque_pret,
             sha256(concat('{prefixe}', cb_usager, '{suffixe}')::bytea)::varchar,
-            TO_DATE(date, 'YYYY-MM-DD'), -- Conversion de la colonne date VARCHAR en DATE
+            TO_TIMESTAMP(date, 'YYYY-MM-DD HH24:MI:SS'), -- Conversion de la colonne date VARCHAR en TIMESTAMP
             bibliotheque_document,
             institution_doc,
             institution_usager
@@ -170,7 +193,7 @@ try:
     """
     executer_requete(connexion, requete, logger)
 
-    # On supprime les données temporaires
+    # Suppression des données temporaires
     requete = "DELETE FROM _tmp_emprunts"
     executer_requete(connexion, requete, logger)
 
