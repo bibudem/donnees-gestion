@@ -43,12 +43,37 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
-        # La table des secteurs dans lesquels se retrouvent les bibliotheques
 
+    # La table des programmes de l'Université Laval
+    if (domaines.getboolean('domaines', 'programmes_laval')):
+        logger.info("Début de la création de la table des disciplines ULaval")
+
+        nom_table = "programmes_laval"
+
+        # On supprime la table si elle existe
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                codeprogramme VARCHAR(50),
+                code VARCHAR(50),
+                nom VARCHAR(255) NULL,
+                discipline VARCHAR(255),
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)    
+    
+    
+    # La table des secteurs dans lesquels se retrouvent les bibliotheques
     if (domaines.getboolean('domaines', 'secteurs')):
         logger.info("Début de la création de la table des secteurs")
 
         nom_table = "secteurs"
+        
+        # On supprime la table si elle existe
         executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
 
         # Création de la table
@@ -79,6 +104,7 @@ try:
                 bibliothecaire VARCHAR(255),
                 bibliotheque VARCHAR(255),
                 secteur VARCHAR(255),
+                facteur NUMERIC,
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (discipline, bibliothecaire)
             );
         """
@@ -102,7 +128,6 @@ try:
             );
         """
         executer_requete(connexion, requete, logger)
-
 
 
     # Les réservations de salles
@@ -186,7 +211,7 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
-    # Les inscriptions
+    # Les évènements
     if (domaines.getboolean('domaines', 'evenements')):
 
         nom_table = "evenements"
@@ -237,7 +262,6 @@ try:
         executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
 
         # Création de la table
-
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
                 ID INTEGER,
@@ -285,7 +309,6 @@ try:
         executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
 
         # Création de la table
-
         requete = f"""
             CREATE TABLE {tmp_prefixe}{nom_table} (
                 Enregistrement INTEGER,
@@ -329,9 +352,9 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+
     # Les fichiers Synchro (étudiants et personnel)
     if (domaines.getboolean('domaines', 'synchro')):
-
 
         # La table temporaire pour le chargement des étudiants
         nom_table = "etudiants"
@@ -434,8 +457,7 @@ try:
         executer_requete(connexion, requete, logger)
 
 
-        # Création de la table statistiques de la clientèle
-
+    # Création de la table statistiques de la clientèle
     if (domaines.getboolean('domaines', 'usagers_stats')):
         logger.info("Début de la création de la table des statistiques des usagers")
 
@@ -453,6 +475,53 @@ try:
             session VARCHAR(255),
             nb_personnes NUMERIC,
             CONSTRAINT pkey_disciplines_stats PRIMARY KEY (discipline, bibliothecaire, fonction, niveau, session)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+    # Les emprunts de documents
+    if (domaines.getboolean('domaines', 'emprunts')):
+
+        nom_table = "emprunts"
+
+        # La table temporaire pour le chargement
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {tmp_prefixe}{nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                cb_document VARCHAR(255),
+                cote VARCHAR(255),
+                institution_pret VARCHAR(255),
+                bibliotheque_pret VARCHAR(255),
+                cb_usager VARCHAR(255),
+                date VARCHAR(255),
+                bibliotheque_document VARCHAR(255),
+                institution_doc VARCHAR(255),
+                institution_usager VARCHAR(255),
+                CONSTRAINT pkey_tmp_emprunts PRIMARY KEY (id)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+        # La table qui sera visible dans PowerBI
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                cb_document VARCHAR(255),
+                cote VARCHAR(255),
+                institution_pret VARCHAR(255),
+                bibliotheque_pret VARCHAR(255),
+                cb_usager VARCHAR(255),
+                date DATE,
+                bibliotheque_document VARCHAR(255),
+                institution_doc VARCHAR(255),
+                institution_usager VARCHAR(255),
+                CONSTRAINT pkey_emprunts PRIMARY KEY (id)
             );
         """
         executer_requete(connexion, requete, logger)

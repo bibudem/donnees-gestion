@@ -34,24 +34,7 @@ try:
 
     # Connexion à la base de données
     connexion = se_connecter_a_la_base_de_donnees(logger)
-    nom_table = "programmes_laval"
-
-    # On supprime la table si elle existe
-    executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
-
-    # Création de la table
-    requete = f"""
-        CREATE TABLE {nom_table} (
-        id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-        codeprogramme VARCHAR(50),
-        code VARCHAR(50),
-        nom VARCHAR(255) NULL,
-        discipline VARCHAR(255),
-        CONSTRAINT pkey_{nom_table} PRIMARY KEY (id)
-        );
-    """
-    executer_requete(connexion, requete, logger)
-
+    
     # On commence par supprimer toute donnée dans la table
     requete = f"DELETE FROM {nom_table};"
     executer_requete(connexion, requete, logger)
