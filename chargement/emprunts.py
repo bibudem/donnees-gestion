@@ -41,14 +41,14 @@ try:
     executer_requete(connexion, requete, logger)
 
     # Ensuite on charge les données
-    # Fichier 1 mai 2023 au 28 février 2024
-    #cb_document	Cote du document	institution_pret	bibliotheque_pret	cb_usager	date	bibliotheque_document	institution_doc	institution_usager
+    #cb_document	cote	bibliotheque_pret	cb_usager	date	bibliotheque_document	institution_doc	institution_usager
     requete = f"""
         COPY {nom_table}
-        (cb_document, cote, institution_pret, bibliotheque_pret, cb_usager, date, bibliotheque_document, institution_doc, institution_usager)
+        (cb_document, cote, bibliotheque_pret, cb_usager, date, bibliotheque_document, institution_doc, institution_usager)
         FROM '{chemin_fichier_csv}'
         DELIMITER '\t'
-        CSV HEADER;
+        CSV HEADER
+        WHERE date IS NOT NULL; -- Ajout d'une condition pour ignorer les lignes où la date est NULL
     """
     executer_requete(connexion, requete, logger)
 
