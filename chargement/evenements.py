@@ -42,6 +42,10 @@ try:
     """
     copy_from_csv(connexion, requete, chemin_fichier_csv, logger, ",")
 
+    # On va ajuster les valeurs vides
+    requete = f"UPDATE {nom_table} SET presenter = NULL WHERE presenter = '';"
+    executer_requete(connexion, requete, logger)
+
 finally:
     # On ferme la connexion
     fermer_connexion(connexion, logger)
