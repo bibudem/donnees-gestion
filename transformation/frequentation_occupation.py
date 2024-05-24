@@ -98,6 +98,19 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
     """
     executer_requete(connexion, requete, logger)
 
+    # On va inscrire la donnée de session depuis la date
+    requete = """
+        UPDATE frequentation
+        SET session = 
+            CASE
+                WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
+                WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
+                ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
+            END
+        WHERE session IS NULL;
+    """
+
+    executer_requete(connexion, requete, logger)
     # On supprime les données temporaires
     requete = "DELETE FROM _tmp_frequentation"
     executer_requete(connexion, requete, logger)
