@@ -33,6 +33,10 @@ try:
     # Travail sur la table temporaire des réservations
     logger.info("Début de la transformation des données sur les emprunts")
 
+    # On supprime les lignes sans date
+    requete = "DELETE FROM _tmp_emprunts WHERE date IS NULL OR date = '';"
+    executer_requete(connexion, requete, logger)
+
     # On vérifie si on a les bons noms d'institutions
 #    requete = """
 #        SELECT DISTINCT institution
@@ -60,6 +64,8 @@ try:
     #"""
     #        envoyer_courriel("Entrepôt de données - Nouvelles institutions pour les emprunts", intro + res, logger)
     #        sys.exit(1)
+
+# WHERE date IS NOT NULL; -- Ajout d'une condition pour ignorer les lignes où la date est NULL
 
     # Vérification et correction des noms d'institutions
     requete = """
