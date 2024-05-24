@@ -40,7 +40,7 @@ try:
         (fromDate, email, status, location_name, category_name, item_name)
         VALUES %s
     """
-    copy_from_csv(connexion, requete, chemin_fichier_csv, logger)
+    copy_from_csv(connexion, requete, chemin_fichier_csv, logger, ",")
 
 finally:
     # On ferme la connexion
