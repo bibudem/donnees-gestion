@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
-from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
+from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete, copy_from_csv
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour charger les données des emprunts de documents WMS dans l\'entrepôt')
@@ -41,16 +41,13 @@ try:
     executer_requete(connexion, requete, logger)
 
     # Ensuite on charge les données
-    #cb_document	cote	bibliotheque_pret	cb_usager	date	bibliotheque_document	institution_doc	institution_usager
     requete = f"""
-        COPY {nom_table}
+        INSERT INTO {nom_table}
         (cb_document, cote, bibliotheque_pret, cb_usager, date, bibliotheque_document, institution_doc, institution_usager)
-        FROM '{chemin_fichier_csv}'
-        DELIMITER '\t'
-        CSV HEADER
-        WHERE date IS NOT NULL; -- Ajout d'une condition pour ignorer les lignes où la date est NULL
+        VALUES %s
     """
-    executer_requete(connexion, requete, logger)
+    copy_from_csv(connexion, requete, chemin_fichier_csv, logger, "\t")
+
 
 finally:
     # On ferme la connexion

@@ -1,6 +1,9 @@
 import logging
 import psycopg2
 import configparser
+import csv
+
+import psycopg2.extras
 
 
 def se_connecter_a_la_base_de_donnees(logger):
@@ -65,3 +68,19 @@ def cursor2csv(resultats, noms_colonnes, sep = "\t"):
         texte_delimite += '\n'.join(sep.join(map(str, ligne)) for ligne in resultats)
     
     return texte_delimite
+
+def copy_from_csv(conn, requete, nom_fichier, logger, separateur = ";", encoding = "UTF-8", header = True):
+    with open(nom_fichier, mode='r', encoding = encoding) as file:
+        csv_reader = csv.reader(file, delimiter = separateur)
+        data = []
+        if header: next(csv_reader)
+        for row in csv_reader:
+            data.append(tuple(row))
+        try:
+            with conn.cursor() as cursor:
+                psycopg2.extras.execute_values(cursor, requete, data)
+                conn.commit()
+        except Exception as e:
+            logger.error(f"Erreur lors de l'exécution de l'insertion CSV : {e}")
+            conn.rollback()
+            raise
