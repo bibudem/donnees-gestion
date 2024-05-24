@@ -16,9 +16,10 @@ def envoyer_courriel(objet, contenu, logger):
         serveur_smtp = config['email']['server']
         port_smtp = config['email']['port']
         expediteur = config['email']['from']
-        username = config['email']['username']
-        password = config['email']['password']
-
+        # Si le serveur indiqué est "localhost", on présume que le username et password ne sont pas nécessaires
+        if config['email']['server'] != "localhost":
+            username = config['email']['username']
+            password = config['email']['password']
 
         # Destinataire
         destinataire = config['email']['to']
@@ -38,8 +39,9 @@ def envoyer_courriel(objet, contenu, logger):
                 # Démarrer la connexion sécurisée (TLS)
                 serveur.starttls()
 
-                # S'authentifier auprès du serveur SMTP
-                serveur.login(username, password)
+                # S'authentifier auprès du serveur SMTP, seulement si nous avons les infos de login pour un SMTP qui n'est pas localhost
+                if 'username' in locals() and 'password' in locals() and 'serveur_smtp' != 'localhost':
+                    serveur.login(username, password)
 
                 # Envoyer le message
                 serveur.send_message(message)
@@ -47,3 +49,4 @@ def envoyer_courriel(objet, contenu, logger):
 
         except smtplib.SMTPException as e:
             logger.error(f"Échec de l'envoi du courriel à {destinataire} - Objet: {objet}")
+
