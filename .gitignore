@@ -1,5 +1,7 @@
 # Environnement de virtualisation Python
 .env
+.venv
+myenv
 
 # Fichiers compilés Python
 __pycache__/
