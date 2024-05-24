@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
-from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
+from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete, copy_from_csv
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour charger les données des unités dans l\'entrepôt')
@@ -37,13 +37,11 @@ try:
 
     # Ensuite on charge les données
     requete = f"""
-        COPY unites
+        INSERT INTO unites
         (code, nom, discipline)
-        FROM '{chemin_fichier_csv}'
-        DELIMITER ';'
-        CSV HEADER;
+        VALUES %s
     """
-    executer_requete(connexion, requete, logger)
+    copy_from_csv(connexion, requete, chemin_fichier_csv, logger)
 
 finally:
     # On ferme la connexion

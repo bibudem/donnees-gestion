@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
-from db import se_connecter_a_la_base_de_donnees, fermer_connexion, prefixe_sha256, suffixe_sha256, executer_requete
+from db import se_connecter_a_la_base_de_donnees, fermer_connexion, prefixe_sha256, suffixe_sha256, executer_requete, copy_from_csv
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour charger les données d\'inscription aux formations dans l\'entrepôt')
@@ -40,16 +40,13 @@ try:
 
     # Ensuite on charge les données
     requete = f"""
-        COPY {nom_table}
+        INSERT INTO {nom_table}
         (event_id, booking_id, registration_type, email)
-        FROM '{chemin_fichier_csv}'
-        DELIMITER ','
-        CSV HEADER;
+        VALUES %s
     """
-    executer_requete(connexion, requete, logger)
+    copy_from_csv(connexion, requete, chemin_fichier_csv, logger, ",")
 
     # On transforme la forme du courriel pour le rendred illisible
-    # On copie proprietaire dans presentateur si ce dernier est 'null'
     requete = f"""
         UPDATE {nom_table}
         SET email = sha256(concat('{prefixe}', email, '{suffixe}')::bytea)::varchar;

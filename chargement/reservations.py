@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.path.abspath("commun"))
 from logs import initialisation_logs
-from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete
+from db import se_connecter_a_la_base_de_donnees, fermer_connexion, executer_requete, copy_from_csv
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script pour charger les données de réservation de salles dans l\'entrepôt')
@@ -34,15 +34,13 @@ try:
     # Connexion à la base de données
     connexion = se_connecter_a_la_base_de_donnees(logger)
 
-    # On charge les données
+    # Ensuite on charge les données
     requete = f"""
-        COPY {nom_table}
+        INSERT INTO {nom_table}
         (fromDate, email, status, location_name, category_name, item_name)
-        FROM '{chemin_fichier_csv}'
-        DELIMITER ','
-        CSV HEADER;
+        VALUES %s
     """
-    executer_requete(connexion, requete, logger)
+    copy_from_csv(connexion, requete, chemin_fichier_csv, logger)
 
 finally:
     # On ferme la connexion
