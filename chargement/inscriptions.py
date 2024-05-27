@@ -38,6 +38,10 @@ try:
     # Connexion à la base de données
     connexion = se_connecter_a_la_base_de_donnees(logger)
 
+    # On supprime les données temporaires
+    requete = f"DELETE FROM {nom_table}"
+    executer_requete(connexion, requete, logger)
+
     # Ensuite on charge les données
     requete = f"""
         INSERT INTO {nom_table}

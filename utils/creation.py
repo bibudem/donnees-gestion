@@ -271,9 +271,6 @@ try:
                 Ouverture_session TIMESTAMP,
                 Fermeture_session TIMESTAMP,
                 Duree INTEGER,
-                courriel VARCHAR(255),
-                discipline VARCHAR(255),
-                bibliotheque VARCHAR(255),
                 CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (id)
             );
         """
@@ -412,7 +409,6 @@ try:
         # Création de la table
         requete = f"""
             CREATE TABLE {nom_table} (
-                id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
                 journee date,
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
@@ -426,7 +422,8 @@ try:
                 unite VARCHAR(255),
                 discipline VARCHAR(255),
                 bibliotheque VARCHAR(100),
-                clientele BOOLEAN
+                clientele BOOLEAN,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (journee, usager)
             );
         """
         executer_requete(connexion, requete, logger)

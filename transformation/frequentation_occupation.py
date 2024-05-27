@@ -63,30 +63,17 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
             envoyer_courriel("Entrepôt de données - Nouvelles bibliothèques pour l'occupation", intro + res, logger)
             sys.exit(1)
 
-    # On corrige les noms de bibliothèque
-    requete = """
-        UPDATE _tmp_frequentation
-        SET secteur = s.accepter
-        FROM _synonymes s
-        WHERE secteur = s.rejeter
-        AND s.domaine = 'Fréquentation'
-    """
-    executer_requete(connexion, requete, logger)
-    requete = """
-        UPDATE _tmp_occupation
-        SET secteur = s.accepter
-        FROM _synonymes s
-        WHERE secteur = s.rejeter
-        AND s.domaine = 'Fréquentation'
-    """
-    executer_requete(connexion, requete, logger)
-
     # On va copier les données temporaires dans la table finale
     requete = """
         INSERT INTO frequentation
         (journee, bibliotheque, frequentation)
         SELECT DATE_TRUNC('day', date) as jour, secteur, SUM(entrees)
-        FROM _tmp_frequentation GROUP BY jour, secteur;
+        FROM _tmp_frequentation GROUP BY jour, secteur
+        ON CONFLICT (journee, bibliotheque)
+        DO UPDATE SET
+            frequentation = EXCLUDED.frequentation,
+            occupation = NULL,
+            session = NULL;
     """
     executer_requete(connexion, requete, logger)
     requete = """
@@ -95,6 +82,16 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
             WHERE t.secteur = bibliotheque 
             AND DATE_TRUNC('day', t.date) = journee)
         WHERE occupation IS NULL;
+    """
+    executer_requete(connexion, requete, logger)
+
+    # On corrige les noms de bibliothèque
+    requete = """
+        UPDATE frequentation
+        SET bibliotheque = s.accepter
+        FROM _synonymes s
+        WHERE bibliotheque = s.rejeter
+        AND s.domaine = 'Fréquentation'
     """
     executer_requete(connexion, requete, logger)
 
@@ -109,12 +106,6 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
             END
         WHERE session IS NULL;
     """
-
-    executer_requete(connexion, requete, logger)
-    # On supprime les données temporaires
-    requete = "DELETE FROM _tmp_frequentation"
-    executer_requete(connexion, requete, logger)
-    requete = "DELETE FROM _tmp_occupation"
     executer_requete(connexion, requete, logger)
 
 finally:

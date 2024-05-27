@@ -56,48 +56,52 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
             envoyer_courriel("Entrepôt de données - Nouvelles bibliothèques pour les ordinateurs publics", intro + res, logger)
             sys.exit(1)
 
-    # On corrige les noms de bibliothèque
-    requete = """
-        UPDATE _tmp_sessions_ordinateurs t
-        SET Secteur = s.accepter
-        FROM _synonymes s
-        WHERE Secteur = s.rejeter
-        AND s.domaine = 'Ordinateurs'
-    """
-    executer_requete(connexion, requete, logger)
-
-    # On ajoute les données de courriel, discipline et biblitoheque si on les a
-    requete = f"""
-        UPDATE _tmp_sessions_ordinateurs t
-        SET courriel = c.courriel, discipline = c.discipline, bibliotheque = c.bibliotheque
-        FROM _clientele_cumul c
-        WHERE sha256(concat('{prefixe}', t.utilisateur_login, '{suffixe}')::bytea)::varchar = c.usager
-    """
-    executer_requete(connexion, requete, logger)
-
-    # Si on ne les a pas, on insère une discipline inconnue
-    requete = "UPDATE _tmp_sessions_ordinateurs SET discipline = 'Inconnue' WHERE discipline IS NULL"
-    executer_requete(connexion, requete, logger)
-    requete = "UPDATE _tmp_sessions_ordinateurs SET bibliotheque = 'Inconnue' WHERE bibliotheque IS NULL"
-    executer_requete(connexion, requete, logger)
-
     # On va copier les données temporaires dans la table finale
     requete = f"""
         INSERT INTO sessions_ordinateurs
-        (usager, courriel, discipline, bibliotheque, journee, dateheure, lieu, ordinateur, duree)
+        (usager, journee, dateheure, lieu, ordinateur, duree)
         SELECT
             sha256(concat('{prefixe}', utilisateur_login, '{suffixe}')::bytea)::varchar,
-            courriel,
-            discipline,
-            bibliotheque,
             Date(Ouverture_session),
             Ouverture_session,
             Secteur,
             Station,
             Duree
         FROM _tmp_sessions_ordinateurs
-        ON CONFLICT DO NOTHING
+        ON CONFLICT (usager, ordinateur, dateheure)
+        DO UPDATE SET
+            journee = EXCLUDED.journee,
+            lieu = EXCLUDED.lieu,
+            duree = EXCLUDED.duree,
+            session = NULL,
+            courriel = NULL,
+            discipline = NULL,
+            bibliotheque = NULL
     """
+    executer_requete(connexion, requete, logger)
+
+    # On corrige les noms de bibliothèque
+    requete = """
+        UPDATE sessions_ordinateurs t
+        SET lieu = s.accepter
+        FROM _synonymes s
+        WHERE t.lieu = s.rejeter
+        AND s.domaine = 'Ordinateurs'
+    """
+    executer_requete(connexion, requete, logger)
+
+    # On ajoute les données de courriel, discipline et biblitoheque si on les a
+    requete = f"""
+        UPDATE sessions_ordinateurs t
+        SET courriel = c.courriel, discipline = c.discipline, bibliotheque = c.bibliotheque
+        FROM _clientele_cumul c
+        WHERE t.usager = c.usager
+        AND (t.courriel IS NULL OR t.discipline IS NULL OR t.bibliotheque IS NULL)
+    """
+    executer_requete(connexion, requete, logger)
+
+    # Si on ne les a pas, on insère une discipline inconnue
+    requete = "UPDATE sessions_ordinateurs SET discipline = 'Inconnue' WHERE discipline IS NULL"
     executer_requete(connexion, requete, logger)
 
     # On va inscrire la donnée de session depuis la date
@@ -111,10 +115,6 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
             END
         WHERE session IS NULL;
     """
-    executer_requete(connexion, requete, logger)
-
-    # On supprime les données temporaires
-    requete = "DELETE FROM _tmp_sessions_ordinateurs"
     executer_requete(connexion, requete, logger)
 
 finally:

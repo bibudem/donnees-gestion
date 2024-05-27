@@ -38,7 +38,11 @@ try:
     requete = """
         INSERT INTO inscriptions (id, courriel, evenement_id)
         SELECT e.booking_id, e.email, e.event_id
-        FROM _tmp_inscriptions e;
+        FROM _tmp_inscriptions e
+        ON CONFLICT (id, evenement_id)
+        DO UPDATE SET
+            courriel = EXCLUDED.courriel,
+            usager = NULL;
     """
     executer_requete(connexion, requete, logger)
 
@@ -47,13 +51,9 @@ try:
         UPDATE inscriptions i
         SET usager = c.usager, discipline = c.discipline
         FROM _clientele_cumul c
-        WHERE i.courriel = c.courriel;
+        WHERE i.courriel = c.courriel
+        AND i.usager = NULL;
     """
-    executer_requete(connexion, requete, logger)
-
-
-    # On supprime les données temporaires
-    requete = "DELETE FROM _tmp_inscriptions"
     executer_requete(connexion, requete, logger)
 
 finally:
