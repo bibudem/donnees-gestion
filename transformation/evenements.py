@@ -44,7 +44,16 @@ try:
         SELECT e.id, e.title, CAST(e.start AS DATE), e.owner, e.presenter, COUNT(i.email) AS nb_participants
         FROM _tmp_evenements e
         LEFT JOIN _tmp_inscriptions i ON e.id = i.event_id
-        GROUP BY e.id;
+        GROUP BY e.id
+        ON CONFLICT (id)
+        DO UPDATE SET
+            titre = EXCLUDED.titre,
+            journee = EXCLUDED.journee,
+            proprietaire = EXCLUDED.proprietaire,
+            presentateur = EXCLUDED.presentateur,
+            nb_participants = EXClUDED.nb_participants,
+            session = NULL
+            ;
     """
     executer_requete(connexion, requete, logger)
 
@@ -67,10 +76,6 @@ try:
             END
         WHERE session IS NULL;
     """
-    executer_requete(connexion, requete, logger)
-
-    # On supprime les données temporaires
-    requete = "DELETE FROM _tmp_evenements"
     executer_requete(connexion, requete, logger)
 
 finally:

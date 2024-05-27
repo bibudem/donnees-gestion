@@ -170,7 +170,18 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             discipline,
             bibliotheque,
             clientele
-        FROM _tmp_etudiants;
+        FROM _tmp_etudiants
+        ON CONFLICT (journee, usager)
+        DO UPDATE SET
+            courriel = EXCLUDED.courriel,
+            codebarres = EXCLUDED.codebarres,
+            fonction = EXCLUDED.fonction,
+            niveau = EXCLUDED.niveau,
+            code_programme = EXCLUDED.code_programme,
+            programme = EXCLUDED.programme,
+            discipline = EXCLUDED.discipline,
+            bibliotheque = EXCLUDED.bibliotheque,
+            clientele = EXCLUDED.clientele;
     """
     executer_requete(connexion, requete, logger)
 
@@ -269,14 +280,19 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
             discipline,
             bibliotheque,
             clientele
-        FROM _tmp_personnel;
+        FROM _tmp_personnel
+        ON CONFLICT (journee, usager)
+        DO UPDATE SET
+            courriel = EXCLUDED.courriel,
+            codebarres = EXCLUDED.codebarres,
+            fonction = EXCLUDED.fonction,
+            code_unite = EXCLUDED.code_unite,
+            unite = EXCLUDED.unite,
+            niveau = EXCLUDED.niveau,
+            discipline = EXCLUDED.discipline,
+            bibliotheque = EXCLUDED.bibliotheque,
+            clientele = EXCLUDED.clientele;
     """
-    executer_requete(connexion, requete, logger)
-
-    # On supprime les données temporaires
-    requete = "DELETE FROM _tmp_personnel"
-    executer_requete(connexion, requete, logger)
-    requete = "DELETE FROM _tmp_etudiants"
     executer_requete(connexion, requete, logger)
 
     # Si nécessaire, on fait un chargement dans la table de clientèle
