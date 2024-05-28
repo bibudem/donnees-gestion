@@ -1,0 +1,156 @@
+﻿code;nom;discipline
+068B03;UdeM Intl - Aff.Inter -Coop;Indéterminé
+606A00;CRM;Mathématiques
+609A00;CICC;Criminologie
+999999;Non-determine;Indéterminé
+A100A0;F de l'aménag - Direction;Aménagement
+A200A0;F de l'aménag - Architecture;Aménagement
+A400A0;F de l'aménag- École de design;Aménagement
+A500A0;F de l'aménag-Urb-Arc paysage;Aménagement
+B200A0;FMD - Santé buccale;Médecine dentaire
+B300A0;FMD - Dent restauration;Médecine dentaire
+B400A0;FMD - Départ. de stomatologie;Médecine dentaire
+C000A0;Faculté de droit;Droit
+C000A1;Faculté de droit notarial;Droit
+C000F0;F droit - Adm dev qual progr;Droit
+C010A0;F droit - CRDP;Droit
+D100A0;FMED - Direction;Médecine
+D100D0;FMED - VD études 1er cycle;Médecine
+D100E1;FMED-VD dév compétences prof;Médecine
+D100I0;FMED - VD Camp UM Mauricie;Médecine
+D201A0;FMED - Anesthé-med-douleur;Médecine
+D202A0;FMED - Chirurgie;Médecine
+D203A0;FMED - Médecine;Médecine
+D204A0;FMED - Méd fam & urgence;Médecine
+D205A0;FMED - Obst-gynéco;Médecine
+D206A0;FMED - Ophtalmologie;Médecine
+D207A0;FMED - Pédiatrie;Médecine
+D208A0;FMED-Psychiatrie-addict;Médecine
+D209A0;FMED - Radio, r-onco & nucl;Médecine
+D401A0;FMED - Nutrition;Nutrition
+D402A0;FMED - Réadaptation;Réadaptation
+D402B0;FMED - Réad/Physio/E clin;Réadaptation
+D402C0;FMED - Réadap - Ergo;Réadaptation
+D403A0;FMED - Orthophonie & audi;Orthophonie et audiologie
+D404A0;FMED - EKSAP;Kinésiologie
+D501A0;FMED - Biochimie & méd mol;Médecine
+D502A0;FMED - Microbio, infec, imm;Médecine
+D503A0;FMED - Patho & bio cell;Médecine
+D506A0;FMED - Pharmaco et physio;Médecine
+D507A0;FMED - Neurosciences;Médecine
+D507C0;FMED - Neurosciences -GR SNC;Médecine
+G100A0;FMV - Direction;Médecine vétérinaire
+G200A0;FMV - Biomédecine vét;Médecine vétérinaire
+G300A0;FMV - Patho & microbio;Médecine vétérinaire
+G400A0;FMV - Sc cliniques;Médecine vétérinaire
+G400B0;FMV - Sc cliniques  - Rech;Médecine vétérinaire
+G604A0;FMV - GREZOSP;Médecine vétérinaire
+G700A0;CDVUM - Centre diag vet.;Médecine vétérinaire
+H000A0;Fac musique;Musique
+H000E0;Fac musique - OICRM;Musique
+J000A0;Fac sc infirmières;Sciences infirmières
+J000D0;FSI - Centre de simulation;Sciences infirmières
+K000A0;Fac de pharmacie;Pharmacie
+K000E0;Fac Pharm - Clinicien;Pharmacie
+L100A0;FSE - Direction;Sciences de l'éducation
+L200A0;FSE - Didactique;Sciences de l'éducation
+L300A0;FSE - Psychopé/andrago;Sciences de l'éducation
+L400A0;FSE - Adm & fond éducation;Sciences de l'éducation
+L500A0;FSE - CFIM;Sciences de l'éducation
+N100A0;FAS - Direction;Pluridisciplinaire
+N101A0;FAS - SAFIRE;Pluridisciplinaire
+N102A0;FAS - Centre de langues;Pluridisciplinaire
+N103A0;FAS - Prog facult études sup;Pluridisciplinaire
+N202A0;FAS - Histoire;Histoire
+N202R0;FAS - Histoire - Recherche - A;Histoire
+N203A0;FAS - His art & ét cinéma;Histoire de l'art et études cinématographiques
+N203R0;FAS-His art & ét cinéma-Rech;Histoire de l'art et études cinématographiques
+N204A0;FAS-Linguistique&traduction;Linguistique et traduction
+N204R0;FAS-Linguistique & trad-Rech;Linguistique et traduction
+N206A0;FAS - Litt lang française;Littératures de langue française
+N206R0;FAS - Litt lang fran - Rech;Littératures de langue française
+N208A0;FAS - Philosophie;Philosophie
+N208R0;FAS - Philosophie - Rech;Philosophie
+N209A0;FAS-Littérature langues monde;Littératures et langues du monde
+N209R0;FAS-Litt et lang monde - rech;Littératures et langues du monde
+N210A0;FAS-Inst. étu. religieuses;Études religieuses
+N301A0;FAS - Anthropologie;Anthropologie
+N301R0;FAS - Anthropologie - Rech - A;Anthropologie
+N302A0;FAS-Bibliothéconomie&sc info;Bibliothéconomie et sciences de l'information
+N302R0;FAS-Biblio&sc info-Rech;Bibliothéconomie et sciences de l'information
+N303A0;FAS - Communication;Communication
+N303R0;FAS - Communication - Rech;Communication
+N304A0;FAS - Criminologie;Criminologie
+N304R0;FAS - Criminologie - Rech;Criminologie
+N305A0;FAS - Démographie;Démographie
+N305R0;FAS - Démographie - Rech;Démographie
+N306A0;FAS - Psychoéducation;Psychoéducation
+N306R0;FAS - Psychoéducation - Rech;Psychoéducation
+N307A0;FAS - Psychologie;Psychologie
+N307B0;FAS-Psychologie - Clinique;Psychologie
+N307C0;FAS-Psychologie - Brams;Psychologie
+N307E0;FAS - Psychologie - CRIPCAS;Psychologie
+N307F0;FAS - Psycho-Rech- UNIQUE;Psychologie
+N307R0;FAS - Psychologie-Recherche-A;Psychologie
+N308A0;FAS-Relations industrielles;Relations industrielles
+N308R0;FAS-Rel industrielles - Rech;Relations industrielles
+N309A0;FAS - Science politique;Science politique
+N309R0;FAS - Sc politique - Rech;Science politique
+N310A0;FAS - Sciences économiques;Sciences économiques
+N311A0;FAS - Travail social;Travail social
+N311R0;FAS-Travail social-Recherche;Travail social
+N312A0;FAS - Sociologie;Sociologie
+N312R0;FAS - Sociologie - Recherche-A;Sociologie
+N401A0;FAS - Chimie;Chimie
+N402A0;FAS - Géographie;Géographie
+N402R0;FAS - Géographie - Recherche;Géographie
+N403A0;FAS-Informatique & rech opér;Informatique
+N403B0;FAS - DESI;Informatique
+N404A0;FAS - Mathématique & stat;Mathématiques
+N404R0;FAS - Math & stat - Rech;Mathématiques
+N405A0;FAS - Physique;Physique
+N405R0;FAS - Physique - Recherche;Physique
+N406A0;FAS - Sciences biologiques;Sciences biologiques
+N502R0;Ins rech bio-végétale - Rech;Sciences biologiques
+N602A0;FAS - Ctre d'études classiques;Sociétés et civilisation
+N603A0;FAS - Ctre études asiatiques;Sociétés et civilisation
+N604A0;FAS - CÉRIUM;Science politique
+N605A0;FAS - C ét allem & européen;Littératures et langues du monde
+P010A0;FEP - Fr langue seconde;Pluridisciplinaire
+P010D0;FEP - Enseign. à distance;Pluridisciplinaire
+P010E1;FEP - Communication;Communication
+P010E2;FEP - Cours de francisation;Pluridisciplinaire
+P010E3;FEP - Info et journalisme;Communication
+P010E4;FEP - Rédaction;Pluridisciplinaire
+P010E5;FEP - Relations publiques;Communication
+P010E6;FEP - Traduction;Linguistique et traduction
+P010E7;FEP - Publicité;Communication
+P010F1;FEP - Gest police & sécurité;Criminologie
+P010F2;FEP - Gestion philanthropique;Pluridisciplinaire
+P010F3;FEP - Gest services santé;Santé publique
+P010F4;FEP - Rel. industrielles;Relations industrielles
+P010G1;FEP - Criminologie;Criminologie
+P010G2;FEP - Droit;Droit
+P010G3;FEP - Interv auprès jeunes;Travail social
+P010G4;FEP - Déficience intellect;Psychoéducation
+P010G5;FEP - Petite enfance & famille;Psychoéducation
+P010G6;FEP - Toxicomanies;Travail social
+P010G7;FEP - Violence et société;Travail social
+P010H1;FEP - Gérontologie;Médecine
+P010H2;FEP - Santé communautaire;Santé publique
+P010H3;FEP - Santé, sécu. travail;Santé publique
+P010H4;FEP - Santé mentale;Psychologie
+P010H5;FEP - Mentor pairs aidants;Pluridisciplinaire
+P010I1;FEP - Animation;Pluridisciplinaire
+P010I2;FEP - Créativité;Pluridisciplinaire
+P010I3;FEP - Coop. internationale;Pluridisciplinaire
+P010I4;FEP - ACCÈS;Pluridisciplinaire
+P010I5;FEP - Sexualité;Pluridisciplinaire
+P010I6;FEP - Enquête-renseignement;Criminologie
+P010I7;FEP - Intervention-psycho;Psychologie
+Q000B3;ESP - Séminaires;Pluridisciplinaire
+R000A0;École d'optométrie;Optométrie
+T200A0;ESPUM-Gest, éval & pol santé;Santé publique
+T300A0;ESPUM - Méd soc & prev;Santé publique
+T400A0;ESPUM - Santé env & travail;Santé publique
+T501A0;ESPUM - CReSP;Santé publique

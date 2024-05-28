@@ -1,0 +1,261 @@
+﻿code;nom;discipline
+AMEN;;Aménagement
+ARCH;;Aménagement
+ARCP;;Aménagement
+DIND;;Aménagement
+PDOC;Stage en aménagement;Aménagement
+URBA;;Aménagement
+ANTH;;Anthropologie
+PDOC;Stage en anthropologie;Anthropologie
+BINF;;Bibliothéconomie et sciences de l'information
+PDOC;Stage en bibliothéconomie;Bibliothéconomie et sciences de l'information
+CHIM;;Chimie
+PDOC;Stage en chimie;Chimie
+PDOC;Stage en chimie médicinale;Chimie
+COMM;;Communication
+FASD;Journalisme;Communication
+INTE;Relations publiques;Communication
+PDOC;Stage en communication;Communication
+CRIM;;Criminologie
+INTE;Criminologie;Criminologie
+PDOC;Stage en criminologie;Criminologie
+DEMO;;Démographie
+2DRT;;Droit
+DROI;;Droit
+INTE;Actualisation en droit;Droit
+INTE;Droit;Droit
+PDOC;Stage en droit;Droit
+PDOC;Stage en théo. sc. de la reli.;Études religieuses
+RELI;;Relations industrielles
+THEO;;Études religieuses
+GEOG;;Géographie
+PDOC;Stage en géographie;Géographie
+HIST;Exploration en histoire;Histoire
+HIST;Histoire;Histoire
+PDOC;Stage en histoire;Histoire
+CINE;;Histoire de l'art et études cinématographiques
+HART;;Histoire de l'art et études cinématographiques
+PDOC;Stage en histoire de l'art;Histoire de l'art et études cinématographiques
+PDOC;Stage ét. cinématographiques;Histoire de l'art et études cinématographiques
+BCUM;;Indéterminé
+ECHA;;Indéterminé
+ENSE;;Indéterminé
+ENST;;Indéterminé
+ENTI;;Indéterminé
+EWEB;;Indéterminé
+LFEP;;Indéterminé
+LIBR;Études libres cours 1er cycle;Indéterminé
+LIBR;Études libres cours 2e cycle;Indéterminé
+LIBR;Études libres cours 3e cycle;Indéterminé
+LMIC;;Indéterminé
+PREP;Année préparatoire;Indéterminé
+PREP;Compléments de formation;Indéterminé
+RECH;;Indéterminé
+INFO;;Informatique
+PDOC;Stage en bioinformatique;Informatique
+PDOC;Stage en informatique;Informatique
+KINE;;Kinésiologie
+PDOC;Stage sc. activité physique;Kinésiologie
+LING;;Linguistique et traduction
+PDOC;Stage en linguistique;Linguistique et traduction
+TRAD;;Linguistique et traduction
+HIST;Études québécoises;Littératures de langue française
+LITF;;Littératures de langue française
+PDOC;Stage littérat. lang. franç.;Littératures de langue française
+ALLE;;Littératures et langues du monde
+ANGL;;Littératures et langues du monde
+HISP;;Littératures et langues du monde
+LITC;;Littératures et langues du monde
+LMOD;Langue et culture arabes;Littératures et langues du monde
+LMOD;Langue et culture catalanes;Littératures et langues du monde
+LMOD;Langue et culture italiennes;Littératures et langues du monde
+LMOD;Langue et culture russes;Littératures et langues du monde
+LMOD;Langue port./cult. lusop.;Littératures et langues du monde
+LMOD;Littérature;Littératures et langues du monde
+LMOD;Récits/médias autochtones;Littératures et langues du monde
+LMOD;Traduction 3e langue;Littératures et langues du monde
+LMOD;Ét. allemandes/histoire;Littératures et langues du monde
+LMOD;Ét. latino-américaines;Littératures et langues du monde
+LMOD;Études arabes;Littératures et langues du monde
+LMOD;Études italiennes;Littératures et langues du monde
+PDOC;Stage en littérature;Littératures et langues du monde
+PDOC;Stage littérat. lang. modernes;Littératures et langues du monde
+MATH;;Mathématiques
+PDOC;Stage en mathématiques;Mathématiques
+PDOC;Stage en statistique;Mathématiques
+ANES;;Médecine
+BCHM;;Médecine
+BIOM;;Médecine
+FMED;;Médecine
+INTE;Gérontologie;Médecine
+LIBR;Libre-Anatomo-pathologie;Médecine
+LIBR;Libre-Anesthésiologie cardiaqu;Médecine
+LIBR;Libre-Cardiologie - l'enfant;Médecine
+LIBR;Libre-Cardiologie chez adulte;Médecine
+LIBR;Libre-Chir. gynéco. min. invas;Médecine
+LIBR;Libre-Chir.ortho.rachis ad/enf;Médecine
+LIBR;Libre-Chirurgie cardiaque;Médecine
+LIBR;Libre-Chirurgie générale;Médecine
+LIBR;Libre-Chirurgie orthopédique;Médecine
+LIBR;Libre-Chirurgie plastique;Médecine
+LIBR;Libre-Chirurgie thoracique;Médecine
+LIBR;Libre-Comp.ad.med.sport/exerc;Médecine
+LIBR;Libre-Dermatologie;Médecine
+LIBR;Libre-Endo méta. enfant;Médecine
+LIBR;Libre-Endo. métabol. adulte;Médecine
+LIBR;Libre-Génétique génomique médi;Médecine
+LIBR;Libre-Hématologie;Médecine
+LIBR;Libre-Hématologie /oncol. péd.;Médecine
+LIBR;Libre-Imm. clin./all.-l'enfant;Médecine
+LIBR;Libre-Malad. infectieuses adul;Médecine
+LIBR;Libre-Maladies infect pédiat.;Médecine
+LIBR;Libre-Médecine de famille;Médecine
+LIBR;Libre-Neurochirurgie;Médecine
+LIBR;Libre-Neurologie chez l'adulte;Médecine
+LIBR;Libre-Neurologie pédiatrique;Médecine
+LIBR;Libre-ORL/chir.cervico-faciale;Médecine
+LIBR;Libre-Obstétrique/gynécologie;Médecine
+LIBR;Libre-Oncologie médicale;Médecine
+LIBR;Libre-Oncologie/gynécologique;Médecine
+LIBR;Libre-Ophtalmologie;Médecine
+LIBR;Libre-Physique et réadaptation;Médecine
+LIBR;Libre-Pneumologie chez adulte;Médecine
+LIBR;Libre-Psychiatrie;Médecine
+LIBR;Libre-Pédiatrie;Médecine
+LIBR;Libre-Recons.arti.hanche/genou;Médecine
+LIBR;Libre-Rhumatologie chez adulte;Médecine
+LIBR;Libre-Santé pub/méd. prév.;Médecine
+LIBR;Libre-Urologie;Médecine
+LIBR;Libre-méd.soins.intens.spec.ad;Médecine
+LIBR;Libre-Électrophysio. car. ad.;Médecine
+MEDE;;Médecine
+MFMU;;Médecine
+MIIM;;Médecine
+NSCI;;Médecine
+PBTC;;Médecine
+PDOC;Stage en biochimie;Médecine
+PDOC;Stage en biologie moléculaire;Médecine
+PDOC;Stage en cardiologie;Médecine
+PDOC;Stage en génie biomédical;Médecine
+PDOC;Stage en microbio. immunologie;Médecine
+PDOC;Stage en méd. chir. expér.;Médecine
+PDOC;Stage en médecine;Médecine
+PDOC;Stage en médecine familiale;Médecine
+PDOC;Stage en neuropsychologie;Médecine
+PDOC;Stage en neuroscience;Médecine
+PDOC;Stage en obstétrique-gynéco.;Médecine
+PDOC;Stage en ophtalmologie;Médecine
+PDOC;Stage en pharmacognosie;Médecine
+PDOC;Stage en pharmacologie;Médecine
+PDOC;Stage en physiologie;Médecine
+PDOC;Stage en psychiatrie;Médecine
+PDOC;Stage en pédiatrie;Médecine
+PDOC;Stage en radio-oncologie;Médecine
+PDOC;Stage en sciences biomédicales;Médecine
+PDOC;Stage en sciences cliniques;Médecine
+PDOC;Stage en virolo. et immunol.;Médecine
+PDOC;Stage en virologie;Médecine
+PDOC;Stage patho./ bio. Cellulaires;Médecine
+PHAG;;Médecine
+PHYG;;Médecine
+PSTR;;Médecine
+SANT;;Médecine
+MEDD;;Médecine dentaire
+PDOC;Stage en médecine dentaire;Médecine dentaire
+RMMD;;Médecine dentaire
+SBUC;;Médecine dentaire
+MVET;;Médecine vétérinaire
+PDOC;Stage en sciences vétérinaires;Médecine vétérinaire
+PMBV;;Médecine vétérinaire
+SCVE;;Médecine vétérinaire
+MUSI;;Musique
+PDOC;Stage en musicologie;Musique
+PDOC;Stage en musique;Musique
+PDOC;Stage en musique (composition);Musique
+NUTR;;Nutrition
+PDOC;Stage en nutrition;Nutrition
+OPTO;;Optométrie
+PDOC;Stage en optométrie;Optométrie
+PDOC;Stage en sciences de la vision;Optométrie
+AUDI;;Orthophonie et audiologie
+ORAU;;Orthophonie et audiologie
+ORTP;;Orthophonie et audiologie
+PDOC;Stage en ortho. et audio.;Orthophonie et audiologie
+PEDT;;Médecine
+PDOC;Stage sciences pharmaceutiques;Pharmacie
+PHAR;;Pharmacie
+PDOC;Stage en philosophie;Philosophie
+PHIL;;Philosophie
+PDOC;Stage en physique;Physique
+PHYS;;Physique
+EFEM;;Pluridisciplinaire
+FASD;Arts, création et technol.;Pluridisciplinaire
+FASD;Envir. et dévelop. durable;Pluridisciplinaire
+FASD;Humanités numériques;Pluridisciplinaire
+FASD;Édition numérique;Pluridisciplinaire
+FASD;Ét.féministes/genres/sexualité;Pluridisciplinaire
+GEST;Enquête et renseignement;Criminologie
+GEST;Financement OBNL;Pluridisciplinaire
+GEST;Gest. app. police et sécurité;Criminologie
+GEST;Gest. qualité vie au travail;Pluridisciplinaire
+GEST;Gestion philanthropique;Pluridisciplinaire
+GEST;Gestion serv. santé et soc.;Santé publique
+GEST;Leadership pour militaires;Pluridisciplinaire
+INTE;Coopérat./solidarité internat.;Pluridisciplinaire
+INTE;Sexualité:enj.soc./prat.interv;Pluridisciplinaire
+INTE;Toxicomanies:prév. et réadapt.;Travail social
+LMOD;Humanités numériques;Pluridisciplinaire
+PDOC;Stage multidisciplinaire;Pluridisciplinaire
+PLUR;;Pluridisciplinaire
+PREP;Bac 4 ans sc.humaines et soc.;Pluridisciplinaire
+PREP;Bac 4 ans sc.nat. et formelles;Pluridisciplinaire
+INTE;Petite enfance et famille;Psychoéducation
+PDOC;Stage en psychoéducation;Psychoéducation
+PSED;;Psychoéducation
+INTE;Déficience intellectuelle/TSA;Psychologie
+PDOC;Stage en psychologie;Psychologie
+PDOC;Stage psy.: rech./intervention;Psychologie
+PSYC;;Psychologie
+ERGO;;Réadaptation
+PDOC;Stage en sciences réadaptation;Réadaptation
+PHYT;;Réadaptation
+READ;;Réadaptation
+GEST;Relations industrielles;Relations industrielles
+PDOC;Stage en rel. industrielles;Relations industrielles
+2ADM;;Santé publique
+ADMS;;Santé publique
+ESPU;;Santé publique
+MSOP;;Santé publique
+PDOC;Stage admin. des serv. santé;Santé publique
+PDOC;Stage en santé communautaire;Santé publique
+PDOC;Stage en santé publique;Santé publique
+PDOC;Stage en santé: environ.-trav.;Santé publique
+SEST;;Santé publique
+PDOC;Stage en science politique;Science politique
+SPOL;;Science politique
+PDOC;Stage en sciences biologiques;Sciences biologiques
+SBIO;;Sciences biologiques
+ADME;;Sciences de l'éducation
+DIDA;;Sciences de l'éducation
+EDUC;;Sciences de l'éducation
+PDOC;Stage en admin. éducation;Sciences de l'éducation
+PDOC;Stage en fondements éducation;Sciences de l'éducation
+PDOC;Stage en psychopédagogie;Sciences de l'éducation
+PDOC;Stage en technologie éducation;Sciences de l'éducation
+PSAN;;Sciences de l'éducation
+ECON;;Sciences économiques
+PDOC;Stage en sciences économiques;Sciences économiques
+PDOC;Stage en sciences infirmières;Sciences infirmières
+SINF;;Sciences infirmières
+AUTC;;Sociétés et civilisation
+CLAS;;Sociétés et civilisation
+ETEA;;Sociétés et civilisation
+MEDI;;Sociétés et civilisation
+PDOC;Stage en sociologie;Sociologie
+SOCI;;Sociologie
+INTE;Interv. jeunes: fond./ prat.;Travail social
+INTE;Intervention en dépendances;Travail social
+INTE;Intervention psychoéducative;Travail social
+INTE;Victimologie;Travail social
+PDOC;Stage en service social;Travail social
+SSOC;;Travail social
