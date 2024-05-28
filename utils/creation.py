@@ -253,6 +253,45 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les transactions de référence
+#    if (domaines.getboolean('domaines', 'reference')):
+
+#        nom_table = "reference"
+
+        # La table temporaire pour le chargement
+#        executer_requete(connexion, "DROP TABLE IF EXISTS " + tmp_prefixe + nom_table, logger)
+
+        # Création de la table
+#        requete = f"""
+#            CREATE TABLE {tmp_prefixe}{nom_table} (
+#                transaction_id VARCHAR(50),
+#                date VARCHAR(255),
+#                bibliothecaire VARCHAR (255),
+#                unite VARCHAR(255),
+#                localisation VARCHAR(255)
+#                type_intervention VARCHAR(255)
+#                modalite VARCHAR(255)
+#                CONSTRAINT pkey_{tmp_prefixe}{nom_table} PRIMARY KEY (transaction_id)
+#            );
+#        """
+#        executer_requete(connexion, requete, logger)
+
+#        # La table qui sera visible dans PowerBI
+#        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+#        # Création de la table
+#        requete = f"""
+#            CREATE TABLE {nom_table} (
+#                id VARCHAR(50),
+#                date TIMESTAMP,
+#                bibliothecaire VARCHAR(255),
+#                discipline VARCHAR(255),
+#                evenement_id VARCHAR(50),
+#                CONSTRAINT pkey_{nom_table} PRIMARY KEY (id, date)
+#            );
+#        """
+#        executer_requete(connexion, requete, logger)
+
     # Les ordinateurs publics
     if (domaines.getboolean('domaines', 'ordinateurs')):
 
@@ -514,7 +553,7 @@ try:
                 bibliotheque_document VARCHAR(255),
                 institution_doc VARCHAR(255),
                 institution_usager VARCHAR(255),
-                CONSTRAINT pkey_emprunts PRIMARY KEY (cb_document, cb_usager, date)
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (cb_document, cb_usager, date)
             );
         """
         executer_requete(connexion, requete, logger)
