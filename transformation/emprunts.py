@@ -37,34 +37,6 @@ try:
     requete = "DELETE FROM _tmp_emprunts WHERE date IS NULL OR date = '';"
     executer_requete(connexion, requete, logger)
 
-    # On vérifie si on a les bons noms d'institutions
-#    requete = """
-#        SELECT DISTINCT institution
-#        FROM (
-#            SELECT t.institution_doc AS institution
-#            FROM _tmp_emprunts t
-#            WHERE t.institution_doc NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
-#            UNION
-#            SELECT t.institution_usager AS institution
-#            FROM _tmp_emprunts t
-#            WHERE t.institution_usager NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
-#        ) AS merged_institutions
-#    """
-#    with connexion.cursor() as cursor:
-#        executer_requete_select(cursor, requete, logger)
-#        resultats = cursor.fetchall()
-#        if (cursor.rowcount > 0):
-#            # On doit maintenant les retourner en courriel
-#            noms_colonnes = [desc[0] for desc in cursor.description]
-#            res = cursor2csv(resultats, noms_colonnes)
-#            intro = """
-#    La vérification a identifié de nouvelles institutions non prises en charge.
-#
-    #Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
-    #"""
-    #        envoyer_courriel("Entrepôt de données - Nouvelles institutions pour les emprunts", intro + res, logger)
-    #        sys.exit(1)
-
 # WHERE date IS NOT NULL; -- Ajout d'une condition pour ignorer les lignes où la date est NULL
 
     # Vérification et correction des noms d'institutions
@@ -92,7 +64,7 @@ try:
     """
     executer_requete(connexion, requete, logger)
 
-    # Remplacer le nom des bibliothèques des autres institutions par un seul terme 'Bibliothèque Extérieure'
+    # Remplacer le nom des bibliothèques des autres institutions par un seul terme 'Bibliothèque extérieure'
     requete = """
         UPDATE _tmp_emprunts
         SET bibliotheque_pret = 'Bibliothèque extérieure', bibliotheque_document = 'Bibliothèque extérieure'
@@ -101,33 +73,34 @@ try:
     executer_requete(connexion, requete, logger)
 
     # Vérification si de nouveaux noms de bibliothèques non pris en charge ont été ajoutés
-#    requete = """
-#        SELECT DISTINCT succursale
-#        FROM (
-#            SELECT t.bibliotheque_pret AS succursale
-#            FROM _tmp_emprunts t
-#            WHERE t.bibliotheque_pret NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
-#            UNION
-#            SELECT t.bibliotheque_document AS succursale
-#            FROM _tmp_emprunts t
-#            WHERE t.bibliotheque_document NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
-#        ) AS merged_succursales
-#    """
-#    with connexion.cursor() as cursor:
-#        executer_requete_select(cursor, requete, logger)
-#        resultats = cursor.fetchall()
-#        if (cursor.rowcount > 0):
-#            # On doit maintenant les retourner en courriel
-#            noms_colonnes = [desc[0] for desc in cursor.description]
-#            res = cursor2csv(resultats, noms_colonnes)
-#            intro = """
-#    La vérification a identifié de nouvelles bibliothèques non prises en charge.
+    requete = """
+        SELECT DISTINCT succursale
+        FROM (
+            SELECT t.bibliotheque_pret AS succursale
+            FROM _tmp_emprunts t
+            WHERE t.bibliotheque_pret NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
+            AND t.bibliotheque_pret NOT IN (SELECT s.accepter FROM _synonymes s WHERE s.domaine = 'Emprunts')
+            UNION
+            SELECT t.bibliotheque_document AS succursale
+            FROM _tmp_emprunts t
+            WHERE t.bibliotheque_document NOT IN (SELECT s.rejeter FROM _synonymes s WHERE s.domaine = 'Emprunts')
+            AND t.bibliotheque_document NOT IN (SELECT s.accepter FROM _synonymes s WHERE s.domaine = 'Emprunts')
+        ) AS merged_succursales
+    """
+    with connexion.cursor() as cursor:
+        executer_requete_select(cursor, requete, logger)
+        resultats = cursor.fetchall()
+        if (cursor.rowcount > 0):
+            # On doit maintenant les retourner en courriel
+            noms_colonnes = [desc[0] for desc in cursor.description]
+            res = cursor2csv(resultats, noms_colonnes)
+            intro = """
+    La vérification a identifié de nouvelles bibliothèques non prises en charge.
 
-#    Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
-#    """
-#            envoyer_courriel("Entrepôt de données - Nouvelles bibliothèques pour les emprunts", intro + res, logger)
-#            sys.exit(1)
-
+    Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
+    """
+            envoyer_courriel("Entrepôt de données - Nouvelles bibliothèques pour les emprunts", intro + res, logger)
+            sys.exit(1)
 
     # Vérification et correction des noms de bibliothèques
 
