@@ -282,9 +282,6 @@ try:
         requete = f"""
             CREATE TABLE {nom_table} (
                 usager VARCHAR(255),
-                courriel VARCHAR(255),
-                discipline VARCHAR(255),
-                bibliotheque VARCHAR(100),
                 session DATE,
                 journee DATE,
                 dateheure TIMESTAMP,
