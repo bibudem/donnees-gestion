@@ -295,6 +295,22 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     """
     executer_requete(connexion, requete, logger)
 
+    # On va inscrire le nom de la session depuis la date
+    logger.info(f"Mise a jour de la colonne session de la table _clientele_cumul")
+    requete = """
+        UPDATE _clientele_cumul
+        SET session = 
+            CASE
+                WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
+                WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
+                ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
+            END
+        WHERE session IS NULL;
+    """
+    executer_requete(connexion, requete, logger)
+        
+
+
     # Si nécessaire, on fait un chargement dans la table de clientèle
     if (args.session):
 
@@ -304,22 +320,6 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
         # On ne peut pas avoir des données pour une même journée
         requete = f"DELETE FROM clientele WHERE journee = '{jour}'"
         executer_requete(connexion, requete, logger)
-
-
-        # On va inscrire le nom de la session depuis la date et qui servira aux rapports PowewrBI (ex.:Automne 2023)
-        logger.info(f"Mise a jour de la colonne session de la table _clientele_cumul")
-        requete = """
-            UPDATE _clientele_cumul
-            SET session = 
-                CASE
-                    WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
-                    WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
-                    ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
-                END
-            WHERE session IS NULL;
-        """
-        executer_requete(connexion, requete, logger)
-        
 
         # Normalement la table _clientele_cuml est prête
         requete = f"""
