@@ -84,7 +84,6 @@ try:
                 CONSTRAINT pkey_{nom_table} PRIMARY KEY (bibliotheque)
             );
         """
-        logger.info("Fin de la création de la table des secteurs")
         executer_requete(connexion, requete, logger)
 
 
