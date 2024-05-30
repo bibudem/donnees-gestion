@@ -50,6 +50,7 @@ LIBR;Études libres cours 3e cycle;Indéterminé
 LMIC;;Indéterminé
 PREP;Année préparatoire;Indéterminé
 PREP;Compléments de formation;Indéterminé
+PREP;Bac 4 ans arts et lettres;Pluridisciplinaire
 RECH;;Indéterminé
 INFO;;Informatique
 PDOC;Stage en bioinformatique;Informatique
@@ -128,6 +129,16 @@ LIBR;Libre-Santé pub/méd. prév.;Médecine
 LIBR;Libre-Urologie;Médecine
 LIBR;Libre-méd.soins.intens.spec.ad;Médecine
 LIBR;Libre-Électrophysio. car. ad.;Médecine
+LIBR;Libre-Échocardiographie adulte;Médecine
+LIBR;Libre-Anesthésiologie;Médecine
+LIBR;Libre-Médecine de la douleur;Médecine
+LIBR;Libre-Gest. douleur chronique;Médecine
+LIBR;Libre-Chirurgie vasculaire;Médecine
+LIBR;Libre-Gastroentérologie adulte;Médecine
+LIBR;Libre-Médecine interne génér.;Médecine
+LIBR;Libre-Gastroentérologie pédiat;Médecine
+LIBR;Libre-Psychiatrie enf./ado.;Médecine
+LIBR;Libre-Radio-oncologie;Médecine
 MEDE;;Médecine
 MFMU;;Médecine
 MIIM;;Médecine
@@ -259,3 +270,4 @@ INTE;Intervention psychoéducative;Travail social
 INTE;Victimologie;Travail social
 PDOC;Stage en service social;Travail social
 SSOC;;Travail social
+VISI;Entente interfacultaire - Rés.;Indéterminé
