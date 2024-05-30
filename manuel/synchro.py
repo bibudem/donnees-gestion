@@ -50,7 +50,6 @@ for fichier in dossier.iterdir():
                 fichier_csv_etudiants = dossier_sortie + os.sep + nom_fichier_etudiants + ".csv"
                 fichier_csv_personnel = dossier_sortie + os.sep + nom_fichier_personnel + ".csv"
 
-                logger.info("Traitement du fichier Synchro " + fichier_etudiants)
                 print("Traitement du fichier Synchro " + nom_fichier_etudiants)
 
                 # Extraction des données

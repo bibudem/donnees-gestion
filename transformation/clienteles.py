@@ -296,7 +296,6 @@ Vous devez vérifier les disciplines ci-dessous et vous assurer qu'elles sont da
     executer_requete(connexion, requete, logger)
 
     # On va inscrire le nom de la session depuis la date
-    logger.info(f"Mise a jour de la colonne session de la table _clientele_cumul")
     requete = """
         UPDATE _clientele_cumul
         SET session = 
