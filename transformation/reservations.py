@@ -133,10 +133,6 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
     """
     executer_requete(connexion, requete, logger)
 
-    # On supprime les données temporaires
-    requete = f"DELETE FROM {nom_table}"
-    executer_requete(connexion, requete, logger)
-
 finally:
     # On ferme la connexion
     fermer_connexion(connexion, logger)
