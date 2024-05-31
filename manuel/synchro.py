@@ -78,4 +78,3 @@ for fichier in dossier.iterdir():
                     resultat = subprocess.run(["python", "transformation/clienteles.py"], capture_output=True, text=True)
                 if (resultat.returncode > 0):
                     logger.error("Erreur dans la transformation des données de Synchro " + jour_iso + " : " + resultat.stderr)
-                    sys.exit(1)
