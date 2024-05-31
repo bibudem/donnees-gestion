@@ -65,7 +65,7 @@ for fichier in dossier.iterdir():
                 resultat = subprocess.run(["python", "chargement/etudiants.py", "--jour", jour_iso, "--fichier", fichier_csv_etudiants], capture_output=True, text=True)
                 if (resultat.returncode > 0):
                     logger.error("Erreur dans le chargement des données de Synchro AC " + fichier_csv_etudiants + " : " + resultat.stderr)
-                resultat = subprocess.run(["python", "chargement/personnel.py", "--jour", jour_iso, "--fichier", fichier_csv_etudiants], capture_output=True, text=True)
+                resultat = subprocess.run(["python", "chargement/personnel.py", "--jour", jour_iso, "--fichier", fichier_csv_personnel], capture_output=True, text=True)
                 if (resultat.returncode > 0):
                     logger.error("Erreur dans le chargement des données de Synchro RH " + fichier_csv_etudiants + " : " + resultat.stderr)
                 # On peut maintenant supprimer les fichiers CSV
