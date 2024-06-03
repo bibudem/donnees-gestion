@@ -50,6 +50,7 @@ LIBR;Études libres cours 3e cycle;Indéterminé
 LMIC;;Indéterminé
 PREP;Année préparatoire;Indéterminé
 PREP;Compléments de formation;Indéterminé
+PREP;Bac 4 ans arts et lettres;Pluridisciplinaire
 RECH;;Indéterminé
 INFO;;Informatique
 PDOC;Stage en bioinformatique;Informatique
@@ -78,6 +79,8 @@ LMOD;Ét. allemandes/histoire;Littératures et langues du monde
 LMOD;Ét. latino-américaines;Littératures et langues du monde
 LMOD;Études arabes;Littératures et langues du monde
 LMOD;Études italiennes;Littératures et langues du monde
+LMOD;Études néo-helléniques;Littératures et langues du monde
+LMOD;Études lusophones;Littératures et langues du monde
 PDOC;Stage en littérature;Littératures et langues du monde
 PDOC;Stage littérat. lang. modernes;Littératures et langues du monde
 MATH;;Mathématiques
@@ -128,6 +131,34 @@ LIBR;Libre-Santé pub/méd. prév.;Médecine
 LIBR;Libre-Urologie;Médecine
 LIBR;Libre-méd.soins.intens.spec.ad;Médecine
 LIBR;Libre-Électrophysio. car. ad.;Médecine
+LIBR;Libre-Échocardiographie adulte;Médecine
+LIBR;Libre-Anesthésiologie;Médecine
+LIBR;Libre-Médecine de la douleur;Médecine
+LIBR;Libre-Gest. douleur chronique;Médecine
+LIBR;Libre-Chirurgie vasculaire;Médecine
+LIBR;Libre-Gastroentérologie adulte;Médecine
+LIBR;Libre-Médecine interne génér.;Médecine
+LIBR;Libre-Gastroentérologie pédiat;Médecine
+LIBR;Libre-Psychiatrie enf./ado.;Médecine
+LIBR;Libre-Radio-oncologie;Médecine
+LIBR;Libre-Comp.ad.méd.toxicomanies;Médecine
+LIBR;Libre-Hépatologie chez adulte;Médecine
+LIBR;Libre-Immuno. clin.pédiatrique;Médecine
+LIBR;Libre-Radiologie diagnostique;Médecine
+LIBR;Libre-Radio. interventionnelle;Médecine
+LIBR;Libre-Méd. soins intens. adult;Médecine
+LIBR;Libre-Comp.addit. soins pallia;Médecine
+LIBR;Libre-Méd. maternelle/foetale;Médecine
+LIBR;Libre-Néphrologie chez adulte;Médecine
+LIBR;Libre-Méd. d'urgence pédiat.;Médecine
+LIBR;Libre-Méd. de l'adolescence;Médecine
+LIBR;Libre-Neuroradio. interv.;Médecine
+LIBR;Libre-Microbiol. médicale;Médecine
+LIBR;Libre-Méd. intensifs pédiat.;Médecine
+LIBR;Libre-Gérontopsychiatrie;Médecine
+LIBR;Gestion douleur chronique;Médecine
+LIBR;Libre-Chirurgie card.av. adult;Médecine
+LIBR;Libre-Comp.Ad.soins pers. agée;Médecine
 MEDE;;Médecine
 MFMU;;Médecine
 MIIM;;Médecine
@@ -156,6 +187,14 @@ PDOC;Stage en sciences cliniques;Médecine
 PDOC;Stage en virolo. et immunol.;Médecine
 PDOC;Stage en virologie;Médecine
 PDOC;Stage patho./ bio. Cellulaires;Médecine
+PDOC;Stage en démographie;Démographie
+PDOC;Stage en littérature comparée;Littératures et langues du monde
+PDOC;Stage en anesthésie-réanim.;Médecine
+PDOC;Stage en biopathologie cellu.;Médecine
+PDOC;Stage pédiatrie - néonatalogie;Médecine
+PDOC;Stage en radiologie diagn.;Médecine
+PDOC;Stage en didactique;Sciences de l'éducation
+PDOC;Stage en éducation comparée;Sciences de l'éducation
 PHAG;;Médecine
 PHYG;;Médecine
 PSTR;;Médecine
@@ -204,6 +243,7 @@ GEST;Leadership pour militaires;Pluridisciplinaire
 INTE;Coopérat./solidarité internat.;Pluridisciplinaire
 INTE;Sexualité:enj.soc./prat.interv;Pluridisciplinaire
 INTE;Toxicomanies:prév. et réadapt.;Travail social
+INTE;Coopération internationale;Pluridisciplinaire
 LMOD;Humanités numériques;Pluridisciplinaire
 PDOC;Stage multidisciplinaire;Pluridisciplinaire
 PLUR;;Pluridisciplinaire
@@ -259,3 +299,9 @@ INTE;Intervention psychoéducative;Travail social
 INTE;Victimologie;Travail social
 PDOC;Stage en service social;Travail social
 SSOC;;Travail social
+VISI;Entente interfacultaire - Rés.;Indéterminé
+LEXP;Étudiants libres Explore;Indéterminé
+PDOC;Stage en traduction;Linguistique et traduction
+PDOC;Stage en bio-clin.;Médecine
+PDOC;Stage en chirurgie;Médecine
+PDOC;Stage en sc. neurologiques;Médecine

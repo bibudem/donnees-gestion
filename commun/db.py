@@ -20,7 +20,7 @@ def se_connecter_a_la_base_de_donnees(logger):
             host=config['database']['host'],
             port=config['database']['port']
         )
-        logger.info("Connexion à la base de données réussie.")
+        logger.debug("Connexion à la base de données réussie.")
         return conn
     except Exception as e:
         logger.error(f"Erreur lors de la connexion à la base de données : {e}")
@@ -29,7 +29,7 @@ def se_connecter_a_la_base_de_donnees(logger):
 def fermer_connexion(conn, logger):
     try:
         conn.close()
-        logger.info("Connexion à la base de données fermée.")
+        logger.debug("Connexion à la base de données fermée.")
     except Exception as e:
         logger.error(f"Erreur lors de la fermeture de la connexion : {e}")
         raise
