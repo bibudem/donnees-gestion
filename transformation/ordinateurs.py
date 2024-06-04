@@ -59,15 +59,18 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
     # On va copier les données temporaires dans la table finale
     requete = f"""
         INSERT INTO sessions_ordinateurs
-        (usager, journee, dateheure, lieu, ordinateur, duree)
+        (usager, courriel, discipline, journee, dateheure, lieu, ordinateur, duree)
         SELECT
-            sha256(concat('{prefixe}', utilisateur_login, '{suffixe}')::bytea)::varchar,
-            Date(Ouverture_session),
-            Ouverture_session,
-            Secteur,
-            Station,
-            Duree
-        FROM _tmp_sessions_ordinateurs
+            sha256(concat('{prefixe}', s.utilisateur_login, '{suffixe}')::bytea)::varchar,
+            c.courriel,
+            c.discipline,
+            Date(s.Ouverture_session),
+            s.Ouverture_session,
+            s.Secteur,
+            s.Station,
+            s.Duree
+        FROM _tmp_sessions_ordinateurs s
+        JOIN _clientele_cumul c ON c.usager = sha256(concat('{prefixe}', s.utilisateur_login, '{suffixe}')::bytea)::varchar
         ON CONFLICT (usager, ordinateur, dateheure)
         DO UPDATE SET
             journee = EXCLUDED.journee,
@@ -90,7 +93,7 @@ Vous devez vérifier la table _synonymes pour ajouter les noms ci-dessous.
     """
     executer_requete(connexion, requete, logger)
 
-    # On ajoute les données de courriel, discipline et biblitoheque si on les a
+    # On ajoute les données de courriel, discipline et bibliotheque si on les a
     requete = f"""
         UPDATE sessions_ordinateurs t
         SET courriel = c.courriel, discipline = c.discipline, bibliotheque = c.bibliotheque
