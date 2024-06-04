@@ -507,6 +507,8 @@ try:
                 bibliotheque_pret VARCHAR(255),
                 cb_usager VARCHAR(255),
                 usager VARCHAR(255),
+                courriel VARCHAR(255),
+                discipline VARCHAR(255),
                 date TIMESTAMP,
                 bibliotheque_document VARCHAR(255),
                 institution_doc VARCHAR(255),
