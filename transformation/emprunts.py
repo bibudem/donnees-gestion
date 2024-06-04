@@ -149,17 +149,19 @@ try:
     # Copie des données temporaires dans la table finale
     requete = f"""
         INSERT INTO emprunts
-        (cb_document, cote, bibliotheque_pret, cb_usager, date, bibliotheque_document, institution_doc, institution_usager)
+        (cb_document, cote, bibliotheque_pret, cb_usager, usager, date, bibliotheque_document, institution_doc, institution_usager)
         SELECT
-            cb_document,
-            cote,
-            bibliotheque_pret,
-            sha256(concat('{prefixe}', cb_usager, '{suffixe}')::bytea)::varchar,
-            TO_TIMESTAMP(date, 'YYYY-MM-DD HH24:MI:SS'), -- Conversion de la colonne date VARCHAR en TIMESTAMP
-            bibliotheque_document,
-            institution_doc,
-            institution_usager
-        FROM _tmp_emprunts
+            e.cb_document,
+            e.cote,
+            e.bibliotheque_pret,
+            sha256(concat('{prefixe}', e.cb_usager, '{suffixe}')::bytea)::varchar,
+            c.usager,
+            TO_TIMESTAMP(e.date, 'YYYY-MM-DD HH24:MI:SS'), -- Conversion de la colonne date VARCHAR en TIMESTAMP
+            e.bibliotheque_document,
+            e.institution_doc,
+            e.institution_usager
+        FROM _tmp_emprunts e
+        JOIN _clientele_cumul c ON c.codebarres = sha256(concat('{prefixe}', e.cb_usager, '{suffixe}')::bytea)::varchar
         ON CONFLICT DO NOTHING
 
     """
