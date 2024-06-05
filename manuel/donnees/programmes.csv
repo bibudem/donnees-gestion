@@ -32,6 +32,7 @@ GEOG;;Géographie
 PDOC;Stage en géographie;Géographie
 HIST;Exploration en histoire;Histoire
 HIST;Histoire;Histoire
+HIST;Exploration de l?histoire;Histoire
 PDOC;Stage en histoire;Histoire
 CINE;;Histoire de l'art et études cinématographiques
 HART;;Histoire de l'art et études cinématographiques
@@ -81,6 +82,7 @@ LMOD;Études arabes;Littératures et langues du monde
 LMOD;Études italiennes;Littératures et langues du monde
 LMOD;Études néo-helléniques;Littératures et langues du monde
 LMOD;Études lusophones;Littératures et langues du monde
+LMOD;Langue,culture Grèce moderne;Littératures et langues du monde
 PDOC;Stage en littérature;Littératures et langues du monde
 PDOC;Stage littérat. lang. modernes;Littératures et langues du monde
 MATH;;Mathématiques
@@ -159,6 +161,7 @@ LIBR;Libre-Gérontopsychiatrie;Médecine
 LIBR;Gestion douleur chronique;Médecine
 LIBR;Libre-Chirurgie card.av. adult;Médecine
 LIBR;Libre-Comp.Ad.soins pers. agée;Médecine
+LIBR;Libre-Gref.cell. sou.hém.thér.;Médecine
 MEDE;;Médecine
 MFMU;;Médecine
 MIIM;;Médecine
@@ -235,6 +238,7 @@ FASD;Édition numérique;Pluridisciplinaire
 FASD;Ét.féministes/genres/sexualité;Pluridisciplinaire
 GEST;Enquête et renseignement;Criminologie
 GEST;Financement OBNL;Pluridisciplinaire
+GEST;Financement obnl;Pluridisciplinaire
 GEST;Gest. app. police et sécurité;Criminologie
 GEST;Gest. qualité vie au travail;Pluridisciplinaire
 GEST;Gestion philanthropique;Pluridisciplinaire
