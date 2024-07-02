@@ -149,7 +149,7 @@ try:
     # Copie des données temporaires dans la table finale
     requete = f"""
         INSERT INTO emprunts
-        (cb_document, cote, bibliotheque_pret, cb_usager, usager, courriel, discipline, date, bibliotheque_document, institution_doc, institution_usager)
+        (cb_document, cote, bibliotheque_pret, cb_usager, usager, courriel, discipline, journee, dateheure, bibliotheque_document, institution_doc, institution_usager)
         SELECT
             e.cb_document,
             e.cote,
@@ -158,6 +158,7 @@ try:
             c.usager,
             c.courriel,
             c.discipline,
+            TO_DATE(e.date, 'YYYY-MM-DD'), -- Conversion de la colonne date VARCHAR en DATE
             TO_TIMESTAMP(e.date, 'YYYY-MM-DD HH24:MI:SS'), -- Conversion de la colonne date VARCHAR en TIMESTAMP
             e.bibliotheque_document,
             e.institution_doc,
@@ -171,6 +172,19 @@ try:
 
     # Suppression des données temporaires
     requete = "DELETE FROM _tmp_emprunts"
+    executer_requete(connexion, requete, logger)
+
+    # On va inscrire la donnée de session depuis la date
+    requete = """
+        UPDATE emprunts
+        SET session = 
+            CASE
+                WHEN EXTRACT(MONTH FROM journee) >= 9 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 9, 1)
+                WHEN EXTRACT(MONTH FROM journee) >= 5 THEN MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 5, 1)
+                ELSE MAKE_DATE(EXTRACT(YEAR FROM journee)::INTEGER, 1, 1)
+            END
+        WHERE session IS NULL;
+    """
     executer_requete(connexion, requete, logger)
 
 finally:
