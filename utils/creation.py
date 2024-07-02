@@ -282,6 +282,9 @@ try:
         requete = f"""
             CREATE TABLE {nom_table} (
                 usager VARCHAR(255),
+                courriel VARCHAR(255),
+                discipline VARCHAR(255),
+                bibliotheque VARCHAR(255), 
                 session DATE,
                 journee DATE,
                 dateheure TIMESTAMP,
@@ -509,11 +512,13 @@ try:
                 usager VARCHAR(255),
                 courriel VARCHAR(255),
                 discipline VARCHAR(255),
-                date TIMESTAMP,
+                session DATE,
+                journee DATE,
+                dateheure TIMESTAMP,
                 bibliotheque_document VARCHAR(255),
                 institution_doc VARCHAR(255),
                 institution_usager VARCHAR(255),
-                CONSTRAINT pkey_emprunts PRIMARY KEY (cb_document, cb_usager, date)
+                CONSTRAINT pkey_emprunts PRIMARY KEY (cb_document, cb_usager, dateheure)
             );
         """
         executer_requete(connexion, requete, logger)
