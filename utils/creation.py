@@ -571,6 +571,110 @@ try:
         """
         executer_requete(connexion, requete, logger)
 
+    # Les statistiques annuelles d'inscription
+
+    if (domaines.getboolean('domaines', 'annuel_inscription')):
+
+        nom_table = "annuel_inscription"
+
+       executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                annee VARCHAR(100),
+                bibliotheque VARCHAR(255),
+                cycle1 INTEGER,
+                cycle2 INTEGER,
+                cycle3 INTEGER,
+                enseignants INTEGER,
+                autre INTEGER,
+                total INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (annee, bibliotheque)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+    # Les statistiques annuelles de fréquentation
+
+    if (domaines.getboolean('domaines', 'annuel_frequentation')):
+
+        nom_table = "annuel_frequentation"
+
+       executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                annee VARCHAR(100),
+                bibliotheque VARCHAR(255),
+                entrees_total INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (annee, bibliotheque)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+    # Les statistiques annuelles d'emprunts
+
+    if (domaines.getboolean('domaines', 'annuel_emprunts')):
+
+        nom_table = "annuel_emprunts"
+
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                annee VARCHAR(100),
+                bibliotheque_document VARCHAR(255),
+                emprunts_interne INTEGER,
+                emprunts_peb INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (annee, bibliotheque_document)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+    # Les statistiques annuelles de référence
+
+    if (domaines.getboolean('domaines', 'annuel_reference')):
+
+        nom_table = "annuel_reference"
+
+        executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                annee VARCHAR(100),
+                bibliotheque VARCHAR(255),
+                renseignements INTEGER,
+                references INTEGER,
+                initiations INTEGER,
+                soutien_informatique INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (annee, bibliotheque)
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
+    # Les statistiques annuelles des formations
+
+    if (domaines.getboolean('domaines', 'annuel_formations')):
+
+        nom_table = "annuel_formations"
+
+       executer_requete(connexion, "DROP TABLE IF EXISTS " + nom_table, logger)
+
+        # Création de la table
+        requete = f"""
+            CREATE TABLE {nom_table} (
+                annee VARCHAR(100),
+                formations INTEGER,
+                participants INTEGER,
+                CONSTRAINT pkey_{nom_table} PRIMARY KEY (annee, formations, participants) -- Clé primaire à valider
+            );
+        """
+        executer_requete(connexion, requete, logger)
+
 finally:
     # Fermeture de la connexion
     fermer_connexion(connexion, logger)
