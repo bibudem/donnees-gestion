@@ -1,5 +1,8 @@
 import logging
 import smtplib
+import sys
+import os
+import socket
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import configparser
@@ -30,7 +33,8 @@ def envoyer_courriel(objet, contenu, logger):
         message['To'] = destinataire
         message['Subject'] = objet
 
-        # Ajouter le corps du message
+        # Ajouter le corps du message, avec comme préfixe le nom du script
+        contenu = "serveur: " + socket.gethostname() + "\n" + "script: " + os.path.abspath(sys.argv[0]) + "\n\n" + contenu
         message.attach(MIMEText(contenu, 'plain'))
 
         try:
