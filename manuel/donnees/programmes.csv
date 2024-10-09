@@ -83,6 +83,7 @@ LMOD;Études italiennes;Littératures et langues du monde
 LMOD;Études néo-helléniques;Littératures et langues du monde
 LMOD;Études lusophones;Littératures et langues du monde
 LMOD;Langue,culture Grèce moderne;Littératures et langues du monde
+LMOD;Langue port./cult lusop.;Littératures et langues du monde
 PDOC;Stage en littérature;Littératures et langues du monde
 PDOC;Stage littérat. lang. modernes;Littératures et langues du monde
 MATH;;Mathématiques
@@ -105,19 +106,25 @@ LIBR;Libre-Chirurgie orthopédique;Médecine
 LIBR;Libre-Chirurgie plastique;Médecine
 LIBR;Libre-Chirurgie thoracique;Médecine
 LIBR;Libre-Comp.ad.med.sport/exerc;Médecine
+LIBR;Libre-Comp.add.med.urgence;Médecine
+LIBR;Libre-Comp.ad.med.fam.-ce-a;Médecine
 LIBR;Libre-Dermatologie;Médecine
+LIBR;Libre-Échographie ciblée;Médecine
 LIBR;Libre-Endo méta. enfant;Médecine
 LIBR;Libre-Endo. métabol. adulte;Médecine
 LIBR;Libre-Génétique génomique médi;Médecine
 LIBR;Libre-Hématologie;Médecine
 LIBR;Libre-Hématologie /oncol. péd.;Médecine
 LIBR;Libre-Imm. clin./all.-l'enfant;Médecine
+LIBR;Libre-Ima.musculosq.diag./int.;Médecine
+LIBR;Libre - Imagerie du sein;Médecine
 LIBR;Libre-Malad. infectieuses adul;Médecine
 LIBR;Libre-Maladies infect pédiat.;Médecine
 LIBR;Libre-Médecine de famille;Médecine
 LIBR;Libre-Neurochirurgie;Médecine
 LIBR;Libre-Neurologie chez l'adulte;Médecine
 LIBR;Libre-Neurologie pédiatrique;Médecine
+LIBR;Libre-Patho. Diag/Mole;Médecine
 LIBR;Libre-ORL/chir.cervico-faciale;Médecine
 LIBR;Libre-Obstétrique/gynécologie;Médecine
 LIBR;Libre-Oncologie médicale;Médecine
@@ -127,6 +134,7 @@ LIBR;Libre-Physique et réadaptation;Médecine
 LIBR;Libre-Pneumologie chez adulte;Médecine
 LIBR;Libre-Psychiatrie;Médecine
 LIBR;Libre-Pédiatrie;Médecine
+LIBR;Libre-Radio. cardiothoracique;
 LIBR;Libre-Recons.arti.hanche/genou;Médecine
 LIBR;Libre-Rhumatologie chez adulte;Médecine
 LIBR;Libre-Santé pub/méd. prév.;Médecine
@@ -198,6 +206,7 @@ PDOC;Stage pédiatrie - néonatalogie;Médecine
 PDOC;Stage en radiologie diagn.;Médecine
 PDOC;Stage en didactique;Sciences de l'éducation
 PDOC;Stage en éducation comparée;Sciences de l'éducation
+PDOC;Stage en hématologie-oncologie;Médecine
 PHAG;;Médecine
 PHYG;;Médecine
 PSTR;;Médecine
@@ -309,3 +318,7 @@ PDOC;Stage en traduction;Linguistique et traduction
 PDOC;Stage en bio-clin.;Médecine
 PDOC;Stage en chirurgie;Médecine
 PDOC;Stage en sc. neurologiques;Médecine
+INTA;IA au travail : util. resp.;Pluridisciplinaire
+INTA;IA : util. resp.;Pluridisciplinaire
+INTA;Optimisation aff./IA;Pluridisciplinaire
+INTA;Gestion/intégr. de l'IA;Pluridisciplinaire
