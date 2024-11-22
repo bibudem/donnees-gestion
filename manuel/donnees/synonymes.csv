@@ -9,7 +9,9 @@ Réservations	Bibliothèque de mathématiques et informatique	Mathématiques et 
 Réservations	Bibliothèque de musique	Musique
 Réservations	Bibliothèque de médecine vétérinaire	Médecine vétérinaire
 Réservations	Bibliothèque des lettres et sciences humaines	Lettres et sciences humaines
-Réservations	Bibliothèque des sciences	Sciences
+Réservations	Bibliothèque des sciences	Hubert-Reeves
+Réservations	Bibliothèque Hubert-Reeves (anciennement Sciences)	Hubert-Reeves
+Réservations	Bibliothèque Hubert-Reeves	Hubert-Reeves
 Réservations	Bibliothèque du Parc	Parc
 Réservations	Campus de Laval	Campus de Laval
 Fréquentation	am	Aménagement
@@ -23,7 +25,7 @@ Fréquentation	mu	Musique
 Fréquentation	mv	Médecine vétérinaire
 Fréquentation	pa	Marguerite-d'Youville
 Fréquentation	sa	Santé
-Fréquentation	sciences	Sciences
+Fréquentation	sciences	Hubert-Reeves
 Fréquentation	ss	Lettres et sciences humaines
 Ordinateurs	7077 Avenue du Parc	Parc
 Ordinateurs	Aménagement	Aménagement
@@ -39,7 +41,7 @@ Ordinateurs	Médecine Vétérinaire	Médecine vétérinaire
 Ordinateurs	Optométrie	Optométrie
 Ordinateurs	Paramédicale	Marguerite-d'Youville
 Ordinateurs	Santé	Santé
-Ordinateurs	Sciences	Sciences
+Ordinateurs	Sciences	Hubert-Reeves
 Emprunts	Centre de conservation 101, boul. Marcel-Laurin	Centre de conservation 101 Marcel-Laurin
 Emprunts	Bibliothèque de l'Université de Montréal	Université de Montréal
 Emprunts	Bibliothèque de l'Université du Québec à Rimouski	Université du Québec à Rimouski
@@ -67,7 +69,7 @@ Emprunts	Mathématiques et informatique	Mathématiques et informatique
 Emprunts	Médecine vétérinaire	Médecine vétérinaire
 Emprunts	Musique	Musique
 Emprunts	Santé	Santé
-Emprunts	Sciences	Sciences
+Emprunts	Sciences	Hubert-Reeves
 Emprunts	Thérèse-Gouin-Décarie	Thérèse-Gouin-Décarie
 Emprunts	Traitement et métadonnées	Traitement et métadonnées
 Emprunts	Jardin Botanique	Jardin botanique
