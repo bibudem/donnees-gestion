@@ -8,6 +8,8 @@ Les manipulations sont divisées en trois grandes parties:
 2. **Chargement**: les données sont lues dans les fichiers temporaires pour être chargées telles quelles - ou à peu près - dans l'entrepôt de données, dans des tables temporaires et non exposées.
 3. **Transformation**: les données des tables temporaires sont manipulées puis transférées vers des tables définitives, sur lesquelles des rapports peuvent être constuits.
 
+Ces scripts ont pour but d'alimenter un entrepôt de données et des rapports PowerBi sont construits pour vsualiser les données. Ces rapports ne font pas partie de ce dépôt.
+
 ## Aperçu des sources de données
 
 ### Clientèles (usagers)
@@ -20,19 +22,19 @@ Le chargement alimente quotidiennement la liste cumulative des usagers, à des f
 
 ### Réservations de salles
 
-Les réservations de salles sont effectuées dans LibCal. L'extraction des données, quotidienne, s'effectue par l'API de LibCal. La transformation des données permet d'associer des disciplines aux usagers qui effectuent des réservations.
+Les réservations de salles de travail en équipe aux bibliothèques sont effectuées dans LibCal. L'extraction des données, quotidienne, s'effectue par l'API de LibCal. La transformation des données permet d'associer des disciplines aux usagers qui effectuent des réservations.
 
 ### Formations
 
 Les formations libres offertes aux usagers des bibliothèques sont gérées dans LibCal. L'extraction des données, qui contient à la fois la liste des formations et les inscriptions à ces formations, s'effectue quotidiennement par l'API de LibCal.
 
-La transformation des données permet d'effectuer partiellement une association de l'usager avec une discipline, lorsque l'usager s'est inscrit avec son adresse institutionnelle.
+La transformation des données permet d'effectuer partiellement une association de l'usager avec une discipline, mais seulement lorsque l'usager s'est inscrit avec son adresse institutionnelle.
 
 ### Fréquentation et occupation
 
-Les bibliothèques sont équipées de caméras compte-personnes à l'entrée, ce qui permet d'avoir des données de fréquentation et d'occupation des bibliothèques. Ces données sont récupérées depuis l'API d'un service infonuagique du fournisseur à toutes les nuits et stockées dans une base de données.
+Les bibliothèques sont équipées de caméras compte-personnes à leur entrée, ce qui permet d'avoir des données de fréquentation et d'occupation des bibliothèques. Ces données sont récupérées depuis l'API d'un service infonuagique du fournisseur à toutes les nuits et stockées dans une autre base de données.
 
-Nos scripts vont lire cette base de données quotidiennement afin d'en extraire les données utiles puis les charger et transformer dans l'entrepôt.
+Nos scripts vont lire cette base de données quotidiennement afin d'en extraire les données utiles puis les charger et les transformer dans l'entrepôt.
 
 ### Utilisation des postes publics
 
@@ -41,6 +43,20 @@ Les ordinateurs accessibles aux usagers des bibliothèques enregistrent dans une
 Nos scripts vont lire cette base de données quotidiennement afin d'en extraire les données utiles puis les charger dans l'entrepôt.
 
 La transformation des données permettra d'associer des disciplines aux usagers qui utilisent les postes publics.
+
+### Circulation des documents
+
+Les usagers des bibliothèques empruntent des documents, et ces transactions de circulation sont gérées dans WMS.
+
+Une exportation quotidienne des données de circulation de WMS est effectuée et les scripts vont lire ces données et les charger dans l'entrepôt. La transformation de ces données permet de normaliser les noms de bibliothèques et d'associer des disciplines aux usagers concernés.
+
+### Statistiques de référence
+
+Le personnel des bibliothèques inscrit une transaction dans le module *Reference manager* de LibAnswers à chaque fois qu'il répond à une question de référence, de renseignement, de soutien informatique, etc.
+
+Les scripts interrogent LibAnswers par API pour obttenir, les charger et les transformer.
+
+À noter que seule l'extraction est actuellement programmée car un bogue dans LibAnswers limite le nombre de résultats à 50.
 
 ## Instructions générales
 
@@ -93,7 +109,7 @@ Vous pouvez contrôler quelles tables seront créées en modifiant la section `d
 
 ### Extraction des données
 
-Les scripts du dossier `extraction` permettent d'extraire les données des fichiers ou systèmes sources. Pour savoir quel paramètres utiliser, simplement lancer le script sans arguments.
+Les scripts du dossier `extraction` permettent d'extraire les données des fichiers ou systèmes sources. Pour savoir quels paramètres utiliser, simplement lancer le script sans arguments.
 
 En général, les scripts ont besoin d'une date de début, d'une date de fin, et d'un fichier de sortie.
 
