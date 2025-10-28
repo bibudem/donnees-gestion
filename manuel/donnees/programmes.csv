@@ -15,6 +15,7 @@ PDOC;Stage en chimie médicinale;Chimie
 COMM;;Communication
 FASD;Journalisme;Communication
 INTE;Relations publiques;Communication
+INTE;Communication et relations pub;Communication
 PDOC;Stage en communication;Communication
 CRIM;;Criminologie
 INTE;Criminologie;Criminologie
@@ -24,6 +25,7 @@ DEMO;;Démographie
 DROI;;Droit
 INTE;Actualisation en droit;Droit
 INTE;Droit;Droit
+INTE;Qualification en droit;Droit
 PDOC;Stage en droit;Droit
 PDOC;Stage en théo. sc. de la reli.;Études religieuses
 RELI;;Relations industrielles
@@ -171,6 +173,14 @@ LIBR;Gestion douleur chronique;Médecine
 LIBR;Libre-Chirurgie card.av. adult;Médecine
 LIBR;Libre-Comp.Ad.soins pers. agée;Médecine
 LIBR;Libre-Gref.cell. sou.hém.thér.;Médecine
+LIBR;Libre-Cardio. interv. adulte;Médecine
+LIBR;Libre-Endo. gyn. reprod.;Médecine
+LIBR;LIBRE ? Médecine obstétricale;Médecine
+LIBR;Libre-Néphrologie pédiatrique;Médecine
+LIBR;Libre -  Épileptologie adulte;Médecine
+LIBR;Libre-Neuroradiologie;Médecine
+LIBR;Libre-Imagerie pédiatrique;Médecine
+LIBR;Libre-Médecine nucléaire;Médecine
 MEDE;;Médecine
 MFMU;;Médecine
 MIIM;;Médecine
@@ -319,7 +329,12 @@ PDOC;Stage en traduction;Linguistique et traduction
 PDOC;Stage en bio-clin.;Médecine
 PDOC;Stage en chirurgie;Médecine
 PDOC;Stage en sc. neurologiques;Médecine
+PDOC;Stage en andragogie;Médecine
 INTA;IA au travail : util. resp.;Pluridisciplinaire
 INTA;IA : util. resp.;Pluridisciplinaire
 INTA;Optimisation aff./IA;Pluridisciplinaire
 INTA;Gestion/intégr. de l'IA;Pluridisciplinaire
+IN03;;Pluridisciplinaire
+IN43;;Pluridisciplinaire
+IN01;;Pluridisciplinaire
+IN26;;Pluridisciplinaire
